@@ -13,7 +13,7 @@ namespace CallOfCthulhuSheets
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            //Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             //Routing.RegisterRoute(nameof(StartPage), typeof(StartPage));
             //Routing.RegisterRoute(nameof(MainInvesigatorPage), typeof(MainInvesigatorPage));
 

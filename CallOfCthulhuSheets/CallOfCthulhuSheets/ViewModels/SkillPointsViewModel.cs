@@ -205,7 +205,9 @@ namespace CallOfCthulhuSheets.ViewModels
             var skills = SkillsToAdd.Where((o) => (o.SkillTypeId ?? "OtherType").Equals(OccupSkillType.SkillTypesId)).ToList(); // ?
 
             if (OccupSkillType.SkillTypesId.Equals("OtherType"))
-                skills.AddRange(SkillsToAdd.Where((o) => (o.SkillTypeId.Equals("uncommonId") || o.SkillTypeId.Equals("SpecialId")) && !o.Name.Equals("credit rating"))); // TODO: enter actual Id's
+            {
+                skills.AddRange(SkillsToAdd.Where(o => ((o.SkillTypeId?.Equals("7") ?? false) || (o.SkillTypeId?.Equals("8") ?? false)) && !o.Name.Equals("credit rating"))); //actual Id's "uncommon" & "special skills
+            }
 
             var skillNames = skills.Aggregate(new List<string>(), (lst, next) => { lst.Add(next.ToString()); return lst; });
 

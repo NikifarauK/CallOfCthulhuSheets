@@ -100,7 +100,8 @@ namespace CallOfCthulhuSheets.ViewModels
             }
             else
             {
-                Player current = await SqliteRepo.GetItemAsync<Player>(Xamarin.Essentials.Preferences.Get("CurrentPlayerId", ""));
+                var playerId = Xamarin.Essentials.Preferences.Get("CurrentPlayerId", "");
+                Player current = await SqliteRepo.GetItemAsync<Player>(playerId);
                 newInvestigator.Owner = current;
                 newInvestigator.Occupation = ChosenOccupation;
                 newInvestigator.IsPlayersCharacter = true;
@@ -415,7 +416,8 @@ namespace CallOfCthulhuSheets.ViewModels
             get => occupationId;
             set
             {
-                occupationId = value;
+                if (value != null)
+                    occupationId = value;
                 _ = RefreshOccupation(occupationId);
 
             }

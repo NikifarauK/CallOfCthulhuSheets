@@ -11,6 +11,9 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="Откройте боковое меню что бы выбрать режим"
+                   FontSize="20"
+                   VerticalOptions="Start"/>
             <Label Text="Welcome to 
                    Call Of Cthulhu Sheets!"
                    VerticalTextAlignment="Center"

@@ -23,10 +23,6 @@ namespace CallOfCthulhuSheets.ViewModels
 
         public string Login { get => login; set => SetProperty(ref login, value); }
 
-        private string password;
-
-        public string Password { get => password; set => SetProperty(ref password, value); }
-
         private AsyncCommand enterCommand;
 
         public AsyncCommand EnterCommand
@@ -44,12 +40,12 @@ namespace CallOfCthulhuSheets.ViewModels
 
         private async Task Enter()
         {
-            var registredPlayer = (await SqliteRepo.GetItemsAsync<Player>()).Where((o) => o.Name == login).FirstOrDefault();
+            var registredPlayer = (await SqliteRepo.GetItemsAsync<Player>())?.Where((o) => o.Name == login).FirstOrDefault();
 
             var entersPlayer = new Player() { Name = Login };
 
-            if (!entersPlayer.Name.Equals(registredPlayer.Name))
-            {
+            if (!entersPlayer.Name.Equals(registredPlayer?.Name))
+            { 
                 await SqliteRepo.AddItemAsync(entersPlayer);
                 registredPlayer = entersPlayer;
             }
@@ -61,24 +57,5 @@ namespace CallOfCthulhuSheets.ViewModels
             await Shell.Current.GoToAsync($"//{nameof(StartPage)}");
         }
 
-        private AsyncCommand registerCommand;
-
-        public AsyncCommand RegisterCommand
-        {
-            get
-            {
-                if (registerCommand == null)
-                {
-                    registerCommand = new AsyncCommand(Register);
-                }
-
-                return registerCommand;
-            }
-        }
-
-        private async Task Register()
-        {
-            await Shell.Current.GoToAsync($"{nameof(RegisterPage)}");
-        }
     }
 }

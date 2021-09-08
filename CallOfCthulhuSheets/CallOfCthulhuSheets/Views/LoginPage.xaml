@@ -19,12 +19,8 @@
                    FontSize="Header" FontFamily="FAS" HorizontalTextAlignment="Center"/>
             <Entry Placeholder="Login"
                    Text="{Binding Login}"/>
-            <Entry Placeholder="Password" IsPassword="True"
-                   Text="{Binding Password}"/>
             <Button Text="Enter"
                     Command="{Binding EnterCommand}" />
-            <Button Text="Register"
-                    Command="{Binding RegisterCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
