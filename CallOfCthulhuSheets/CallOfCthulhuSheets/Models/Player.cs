@@ -4,15 +4,9 @@ using System.Collections.Generic;
 
 namespace CallOfCthulhuSheets.Models
 {
-    public class Player : ITableable
+    public class Player : Tableable
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-        
-      
         public string Name { get; set; }
-
-        public int AccessCode { get; set; }
 
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Investigator> Investigators { get; set; }

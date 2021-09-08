@@ -11,13 +11,8 @@ namespace CallOfCthulhuSheets.Models
         Str, Con, Siz, Dex, App, Int, Pow, Edu, Luck
     }
 
-    public class Characteristic : ITableable
+    public class Characteristic : Tableable
     {
-        #region ITableable
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-       
-        #endregion
 
         private int[] characteristics = new int[9];
 
@@ -80,7 +75,7 @@ namespace CallOfCthulhuSheets.Models
         #endregion
 
         [ForeignKey(typeof(Investigator))]
-        public int InvestigatorId { get; set; }
+        public string InvestigatorId { get; set; }
 
         public int GetSkillPointsByBasicChracteristic(ECharacteristic basicCharcterictic)
         {

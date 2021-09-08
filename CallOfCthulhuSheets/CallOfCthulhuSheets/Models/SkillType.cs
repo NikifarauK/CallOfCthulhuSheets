@@ -6,12 +6,8 @@ using System.Text;
 
 namespace CallOfCthulhuSheets.Models
 {
-    public class SkillType : ITableable
+    public class SkillType : Tableable
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-      
-
         public string Name { get; set; }
 
         public override string ToString()

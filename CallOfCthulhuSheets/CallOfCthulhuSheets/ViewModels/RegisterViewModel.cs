@@ -69,7 +69,6 @@ namespace CallOfCthulhuSheets.ViewModels
                 return;
             }
             var newPlayer = new Player() { Name = login };
-            newPlayer.AccessCode = newPlayer.GetLoginAccessHashingByPassword(password);
             await SqliteRepo.AddItemAsync(newPlayer);
             Preferences.Set("IsLoged", true);
             Preferences.Set("CurrentPlayer", login);

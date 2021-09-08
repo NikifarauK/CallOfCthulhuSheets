@@ -26,8 +26,7 @@ namespace CallOfCthulhuSheets.Views
         {
             base.OnAppearing();
 
-            int.TryParse(InvestigatorId, out int result);
-            var investigator = await SqliteRepo.GetItemAsync<Investigator>(result);
+            var investigator = await SqliteRepo.GetItemAsync<Investigator>(InvestigatorId);
             BindingContext = new InvestigatorDetailsViewModel(investigator);
         }
     }

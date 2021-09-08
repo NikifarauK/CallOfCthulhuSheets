@@ -49,9 +49,9 @@ namespace CallOfCthulhuSheets.ViewModels
             set
             {
                 occupationId = value;
-                if (int.TryParse(occupationId, out int res))
+                if (occupationId != null)
                 {
-                    _ = RefreshCommand.ExecuteAsync(res);
+                    _ = RefreshCommand.ExecuteAsync(occupationId);
                 }
             }
         }
@@ -63,32 +63,33 @@ namespace CallOfCthulhuSheets.ViewModels
         private bool isProfskillsComplete;
         public bool IsProfskillsComplete { get => isProfskillsComplete; set => SetProperty(ref isProfskillsComplete, value); }
 
-        AsyncCommand<int> refreshCommand;
-        public AsyncCommand<int> RefreshCommand
+        AsyncCommand<string> refreshCommand;
+        public AsyncCommand<string> RefreshCommand
         {
             get
             {
                 if (refreshCommand == null)
                 {
-                    refreshCommand = new AsyncCommand<int>(RefreshOccupation);
+                    refreshCommand = new AsyncCommand<string>(RefreshOccupation);
                 }
 
                 return refreshCommand;
             }
         }
 
-        private async Task RefreshOccupation(int id)
+
+        private async Task RefreshOccupation(string id)
         {
             IsBusy = true;
             ChosenOccupation = await SqliteRepo.GetItemAsync<Occupation>(id);
             ProfSkills.AddRange(ChosenOccupation?.ProfessionalSkills);
             SkillTypes.AddRange(ChosenOccupation?.OccupSkillTypesDependensies);
-            int freeSkills = 8 - ProfSkills.Count - SkillTypes.Aggregate(0, (sum, next) => sum + next.SkillCount);
+            int freeSkills = Occupation.MAX_PROF_SKILLS - ProfSkills.Count - SkillTypes.Aggregate(0, (sum, next) => sum + next.SkillCount);
             if (freeSkills > 0)
             {
                 SkillTypes.Add(new OccupSkillTypesDependensy()
                 {
-                    SkillTypesId = int.MaxValue,
+                    SkillTypesId = "OtherType",
                     Type = new SkillType() { Name = "остальное" },
                     SkillCount = freeSkills
                 });
@@ -98,12 +99,12 @@ namespace CallOfCthulhuSheets.ViewModels
             MinCreditRating = ChosenOccupation.MinCreditRating;
             CreditRating = ChosenOccupation.MinCreditRating;
             ProfPointsChosen = (int)MinCreditRating;
-            var typeIds = SkillTypes.Aggregate(new List<int>(), (lst, next) => { lst.Add(next.SkillTypesId); return lst; });
+            var typeIds = SkillTypes.Aggregate(new List<string>(), (lst, next) => { lst.Add(next.SkillTypesId); return lst; });
             var allSkills = await SqliteRepo.GetItemsAsync<Skill>();
-            List<Skill> skillsToAdd = new List<Skill>();
+            List<Skill> skillsToChooseFrom = new List<Skill>();
             foreach (var skill in allSkills)
             {
-                if (skill.Id == 18) // credit pating
+                if (skill.Name.Equals("credit rating"))         // credit rating
                 {
                     InvCredRating.Skill = skill;
                     continue;
@@ -111,22 +112,22 @@ namespace CallOfCthulhuSheets.ViewModels
 
                 if (!ProfSkills.Contains(skill, new SkillEqualiti()))
                 {
-                    skillsToAdd.Add(skill);
+                    skillsToChooseFrom.Add(skill);
                 }
             }
-            SkillsToAdd.AddRange(skillsToAdd);
+            SkillsToAdd.AddRange(skillsToChooseFrom);
             foreach (var skill in SkillsToAdd)
             {
-                if (skill.Id == 24)                 //dodge
+                if (skill.Name.Equals("dodge"))                 //dodge
                     skill.BasePoints = HalfOfDex;
-                if (skill.Id == 43)                 //own language
+                if (skill.Name.Equals("language(own)"))        //own language
                     skill.BasePoints = EduCount;
             }
             foreach (var skill in ProfSkills)
             {
-                if (skill.Id == 24)
+                if (skill.Name.Equals("dodge"))                 //dodge
                     skill.BasePoints = HalfOfDex;
-                if (skill.Id == 43)
+                if (skill.Name.Equals("language(own)"))        //own language
                     skill.BasePoints = EduCount;
             }
             IsBusy = false;
@@ -201,10 +202,10 @@ namespace CallOfCthulhuSheets.ViewModels
                 return;
             }
 
-            var skills = SkillsToAdd.Where((o) => (o.SkillTypeId ?? int.MaxValue) == OccupSkillType.SkillTypesId).ToList();
+            var skills = SkillsToAdd.Where((o) => (o.SkillTypeId ?? "OtherType").Equals(OccupSkillType.SkillTypesId)).ToList(); // ?
 
-            if (OccupSkillType.SkillTypesId == int.MaxValue)
-                skills.AddRange(SkillsToAdd.Where((o) => (o.SkillTypeId == 7 || o.SkillTypeId == 8) && o.Id != 18)); //18 - credit rating's id
+            if (OccupSkillType.SkillTypesId.Equals("OtherType"))
+                skills.AddRange(SkillsToAdd.Where((o) => (o.SkillTypeId.Equals("uncommonId") || o.SkillTypeId.Equals("SpecialId")) && !o.Name.Equals("credit rating"))); // TODO: enter actual Id's
 
             var skillNames = skills.Aggregate(new List<string>(), (lst, next) => { lst.Add(next.ToString()); return lst; });
 

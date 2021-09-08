@@ -17,7 +17,7 @@ using Xamarin.Essentials;
 namespace CallOfCthulhuSheets.ViewModels
 {
     public class LoginViewModel : BaseViewModel
-    { 
+    {
 
         private string login;
 
@@ -48,25 +48,17 @@ namespace CallOfCthulhuSheets.ViewModels
 
             var entersPlayer = new Player() { Name = Login };
 
-            entersPlayer.AccessCode = entersPlayer.GetLoginAccessHashingByPassword(Password);
+            if (!entersPlayer.Name.Equals(registredPlayer.Name))
+            {
+                await SqliteRepo.AddItemAsync(entersPlayer);
+                registredPlayer = entersPlayer;
+            }
 
-            if (entersPlayer.AccessCode != registredPlayer?.AccessCode)
-            {
-                Login = "";
-                Password = "";
-                await Shell.Current.DisplayAlert("Error", "Wrong login or password", "OK").ConfigureAwait(false);
-            }
-            else
-            {
-                Preferences.Set("IsLoged", true);
-                Preferences.Set("CurrentPlayer", login);
-                Preferences.Set("CurrentPlayerId", registredPlayer.Id);
-                Shell.Current.FlyoutHeader = new FlyoutHeader();
-                Login = "";
-                Password = "";
-                await Shell.Current.GoToAsync($"//{nameof(StartPage)}");
-                
-            }
+            Preferences.Set("IsLoged", true);
+            Preferences.Set("CurrentPlayer", login);
+            Preferences.Set("CurrentPlayerId", registredPlayer.Id);
+            Shell.Current.FlyoutHeader = new FlyoutHeader();
+            await Shell.Current.GoToAsync($"//{nameof(StartPage)}");
         }
 
         private AsyncCommand registerCommand;

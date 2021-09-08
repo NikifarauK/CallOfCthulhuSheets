@@ -6,12 +6,10 @@ using System.Text;
 
 namespace CallOfCthulhuSheets.Models
 {
-    public class Occupation : ITableable
+    public class Occupation : Tableable
     {
+        public const int MAX_PROF_SKILLS = 8;
 
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-       
 
         public string Name { get; set; }
 

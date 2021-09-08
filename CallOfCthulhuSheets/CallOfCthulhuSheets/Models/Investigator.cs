@@ -6,11 +6,8 @@ using System.Text;
 
 namespace CallOfCthulhuSheets.Models
 {
-    public class Investigator : ITableable
+    public class Investigator : Tableable
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-
         public bool IsPlayersCharacter { get; set; }
 
         [MaxLength(32)]
@@ -20,35 +17,35 @@ namespace CallOfCthulhuSheets.Models
         public string Birthplace { get; set; }
 
         public int Age { get; set; }
-        
+
         [MaxLength(32)]
         public string Sex { get; set; }
 
         [ForeignKey(typeof(Player))]
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
         [ManyToOne(CascadeOperations = CascadeOperation.CascadeRead)]
         public Player Owner { get; set; }
 
         [ForeignKey(typeof(Characteristic))]
-        public int CharacteristicId { get; set; }
+        public string CharacteristicId { get; set; }
         [OneToOne(CascadeOperations = CascadeOperation.All)]
         public Characteristic Characteristic { get; set; }
 
         [ForeignKey(typeof(Occupation))]
-        public int OccupationId { get; set; }
+        public string OccupationId { get; set; }
         [ManyToOne(CascadeOperations = CascadeOperation.CascadeRead)]
         public Occupation Occupation { get; set; }
-        
+
         [Ignore]
-        public int MaxHitPoints { get => Characteristic==null ? 0 : (Characteristic.Siz + Characteristic.Con) / 10; }
+        public int MaxHitPoints { get => Characteristic == null ? 0 : (Characteristic.Siz + Characteristic.Con) / 10; }
         public int CurrentHitPoints { get; set; }
-        
+
         [Ignore]
-        public int MaxSanity { get => Characteristic.Pow; }
+        public int MaxSanity { get => Characteristic?.Pow ?? 0; }
         public int CurrentSanity { get; set; }
 
         [Ignore]
-        public int MaxMagicPoints { get => Characteristic.Pow / 5; }
+        public int MaxMagicPoints { get => (Characteristic?.Pow ?? 0) / 5; }
         public int CurrentMagicPoints { get; set; }
 
         [OneToMany(CascadeOperations = CascadeOperation.All)]

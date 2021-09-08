@@ -19,7 +19,7 @@ namespace CallOfCthulhuSheets.Services
             SqliteRepo.db = db;
         }
 
-        public static async Task AddItemAsync<T>(T item) where T : ITableable
+        public static async Task AddItemAsync<T>(T item) where T : Tableable
         {
             try
             {
@@ -32,7 +32,7 @@ namespace CallOfCthulhuSheets.Services
             }
         }
 
-        public static async Task DeleteItemAsync<T>(object item) where T : ITableable
+        public static async Task DeleteItemAsync<T>(T item) where T : Tableable
         {
             try
             {
@@ -46,7 +46,7 @@ namespace CallOfCthulhuSheets.Services
 
         }
 
-        public static async Task<T> GetItemAsync<T>(int id) where T : ITableable, new()
+        public static async Task<T> GetItemAsync<T>(string id) where T : Tableable, new()
         {
             try
             {
@@ -59,7 +59,7 @@ namespace CallOfCthulhuSheets.Services
             }
         }
 
-        public static async Task<List<T>> GetItemsAsync<T>() where T : ITableable, new()
+        public static async Task<List<T>> GetItemsAsync<T>() where T : Tableable, new()
         {
             try
             {
@@ -72,7 +72,7 @@ namespace CallOfCthulhuSheets.Services
             }
         }
 
-        public static async Task UpdateItemAsync<T>(T item) where T : ITableable
+        public static async Task UpdateItemAsync<T>(T item) where T : Tableable
         {
             try
             {

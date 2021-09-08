@@ -165,7 +165,7 @@ namespace CallOfCthulhuSheets.ViewModels
             SkillTypes.Clear();
             SkillTypes.Add(null);
             var t = await SqliteRepo.GetItemsAsync<SkillType>();
-            SkillTypes.AddRange(t.Where((o) => o.Id != 7 && o.Id != 8));
+            SkillTypes.AddRange(t.Where((o) => o.Name != "uncommon" || o.Name != "special"));
             IsBusy = false;
         }
 
@@ -418,7 +418,6 @@ namespace CallOfCthulhuSheets.ViewModels
             else
             {
                 await Shell.Current.GoToAsync($"..?OccupationId={ChosenOccup.Id}");
-
             }
         }
 

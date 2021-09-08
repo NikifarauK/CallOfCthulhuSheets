@@ -4,21 +4,16 @@ using System.Collections.Generic;
 
 namespace CallOfCthulhuSheets.Models
 {
-    public enum EItemType {Weapon, Book,  }
+    public enum EItemType { Weapon, Book, Other, }
 
-    public class Item : ITableable
+    public class Item : Tableable
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-       
-
         [MaxLength(32)]
         public string Name { get; set; }
+
         [MaxLength(32)]
         public string Description { get; set; }
 
         public EItemType ItemType { get; set; }
-
-
     }
 }

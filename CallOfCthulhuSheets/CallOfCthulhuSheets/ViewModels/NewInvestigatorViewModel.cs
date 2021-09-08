@@ -100,7 +100,7 @@ namespace CallOfCthulhuSheets.ViewModels
             }
             else
             {
-                Player current = await SqliteRepo.GetItemAsync<Player>(Xamarin.Essentials.Preferences.Get("CurrentPlayerId", 0));
+                Player current = await SqliteRepo.GetItemAsync<Player>(Xamarin.Essentials.Preferences.Get("CurrentPlayerId", ""));
                 newInvestigator.Owner = current;
                 newInvestigator.Occupation = ChosenOccupation;
                 newInvestigator.IsPlayersCharacter = true;
@@ -416,10 +416,8 @@ namespace CallOfCthulhuSheets.ViewModels
             set
             {
                 occupationId = value;
-                if (int.TryParse(occupationId, out int res))
-                {
-                    _ = RefreshOccupation(res);
-                }
+                _ = RefreshOccupation(occupationId);
+
             }
         }
 
@@ -470,7 +468,7 @@ namespace CallOfCthulhuSheets.ViewModels
 
         public Occupation ChosenOccupation { get => chosenOccupation; set => SetProperty(ref chosenOccupation, value); }
 
-        private async Task RefreshOccupation(int id)
+        private async Task RefreshOccupation(string id)
         {
             IsBusy = true;
             ChosenOccupation = await SqliteRepo.GetItemAsync<Occupation>(id);

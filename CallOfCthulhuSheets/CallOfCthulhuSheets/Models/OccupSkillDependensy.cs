@@ -3,18 +3,14 @@ using SQLiteNetExtensions.Attributes;
 using System.Collections.Generic;
 
 namespace CallOfCthulhuSheets.Models
-{
-    public class OccupSkillDependensy : ITableable
+{ 
+    public class OccupSkillDependensy : Tableable
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-       
-
         [ForeignKey(typeof(Occupation))]
-        public int OccupationId { get; set; }
+        public string OccupationId { get; set; }
 
         [ForeignKey(typeof(Skill))]
-        public int SkillId { get; set; }
+        public string SkillId { get; set; }
 
     }
 }

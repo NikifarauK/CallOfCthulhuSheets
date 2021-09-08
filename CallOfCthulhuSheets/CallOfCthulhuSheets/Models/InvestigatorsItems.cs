@@ -1,19 +1,21 @@
-﻿using SQLiteNetExtensions.Attributes;
+﻿
+using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CallOfCthulhuSheets.Models
 {
-    public class InvestigatorsItems : ITableable
+    public class InvestigatorsItems : Tableable
     {
-        public int Id { get; set; }
-
-
         [ForeignKey(typeof(Investigator))]
-        public int InvestigatorId { get; set; }
+        public string InvestigatorId { get; set; }
 
         [ForeignKey(typeof(Item))]
-        public int ItemId { get; set; }
+        public string ItemId { get; set; }
+
+        public int Malfunction { get; set; }
+
+        public int Charges { get; set; }
     }
 }

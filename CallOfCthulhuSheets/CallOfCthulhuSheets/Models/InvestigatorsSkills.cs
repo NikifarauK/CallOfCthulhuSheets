@@ -6,14 +6,10 @@ using System.Text;
 
 namespace CallOfCthulhuSheets.Models
 {
-    public class InvestigatorsSkills : ITableable
+    public class InvestigatorsSkills : Tableable
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-        
-
         [ForeignKey(typeof(Skill))]
-        public int SkillId { get; set; }
+        public string SkillId { get; set; }
         [ManyToOne(CascadeOperations = CascadeOperation.CascadeRead)]
         public Skill Skill { get; set; }
 
@@ -21,7 +17,7 @@ namespace CallOfCthulhuSheets.Models
         public string Name { get => Skill?.Description; }
 
         [ForeignKey(typeof(Investigator))]
-        public int InvestigatorId { get; set; }
+        public string InvestigatorId { get; set; }
 
         public int? CurrentSkillValue { get; set; }
 
