@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:viewmodels="clr-namespace:CallOfCthulhuSheets.ViewModels" 
+             xmlns:models="clr-namespace:CallOfCthulhuSheets.Models" 
+             x:DataType="viewmodels:CampaignViewModel"
+             x:Class="CallOfCthulhuSheets.Views.CampaignPage"
+             x:Name="TheCampaignPage"
+             Title="Ваша кампания"
+             BackgroundColor="{StaticResource PrimBackground}"
+             >
+    <ContentPage.BindingContext>
+        <viewmodels:CampaignViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry Text="{Binding Name}" Placeholder="Название кампании"/>
+            <Entry Text="{Binding Description}" Placeholder="Описание кампании"/>
+            <Label Text="Список сессий" Style="{StaticResource BaseText}"/>
+            <Frame Style="{StaticResource GrayFrame}">
+                <CollectionView SelectionMode="Single"
+                        HeightRequest="200"
+                        ItemsSource="{Binding Sessions}"
+                        SelectedItem="{Binding SelectedSession}"
+                        SelectionChangedCommand="{Binding SessionSelectedCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedSession}"
+                >
+                    <CollectionView.EmptyView>
+                        <Label Text="Здесь будут отображаться сессии вашей кампании"
+                               Style="{StaticResource BaseText}"/>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Session">
+                            <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem BackgroundColor="Red"
+                                                   Command="{Binding BindingContext.DeleteCommand, Source={Reference TheCampaignPage}}"
+                                                   CommandParameter="{Binding .}"
+                                                   IsDestructive="True"
+                                                   Text="Delete" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Frame Style="{StaticResource GrayFrame}">
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Entry Text="{Binding Number}" Style="{StaticResource BaseEntry}"/>
+                                            <Entry Text="{Binding Name}" Style="{StaticResource BaseEntry}"/>
+                                        </StackLayout>
+                                        <Entry Text="{Binding Descrption}" Style="{StaticResource BaseEntry}"/>
+                                    </StackLayout>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <Button Text="Добавить новую"
+                            Command="{Binding AddNewSession}"/>
+                    </CollectionView.Footer>
+                </CollectionView>
+            </Frame>
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

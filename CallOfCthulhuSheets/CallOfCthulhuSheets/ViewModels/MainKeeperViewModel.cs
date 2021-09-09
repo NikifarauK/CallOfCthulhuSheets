@@ -1,0 +1,108 @@
+﻿using CallOfCthulhuSheets.Models;
+using CallOfCthulhuSheets.Services;
+using CallOfCthulhuSheets.Views;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.CommunityToolkit.ObjectModel;
+using Xamarin.Essentials;
+using Xamarin.Forms;
+
+namespace CallOfCthulhuSheets.ViewModels
+{
+    public class MainKeeperViewModel : BaseViewModel
+    {
+        private ObservableRangeCollection<Campaign> campaigns;
+        public ObservableRangeCollection<Campaign> Campaigns 
+        {
+            get
+            {
+                if (campaigns == null)
+                    campaigns = new ObservableRangeCollection<Campaign>();
+                return campaigns;
+            }
+        }
+
+
+
+        private AsyncCommand refreshAsyncCommand;
+        public ICommand RefreshAsyncCommand
+        {
+            get
+            {
+                if (refreshAsyncCommand == null)
+                {
+                    refreshAsyncCommand = new AsyncCommand(RefreshAsync);
+                }
+
+                return refreshAsyncCommand;
+            }
+        }
+
+        private async Task RefreshAsync()
+        {
+            IsBusy = true;
+
+            var campaignes = (await SqliteRepo.GetItemsAsync<Campaign>()).ToList();
+            var curentPlayerId = Preferences.Get("CurrentPlayerId", "");
+            var playersCompaignes = campaignes.Where((o) => o.PlayerId == curentPlayerId);
+            Campaigns.Clear();
+            Campaigns.AddRange(playersCompaignes);
+
+            IsBusy = false;
+        }
+
+
+        private Campaign selectedCampaign;
+        public Campaign SelectedCampaign { get => selectedCampaign; set => SetProperty(ref selectedCampaign, value); }
+
+
+        private AsyncCommand<Campaign> itemSelectedCommand;
+        public AsyncCommand<Campaign> ItemSelectedCommand
+        {
+            get
+            {
+                if (itemSelectedCommand == null)
+                {
+                    itemSelectedCommand = new AsyncCommand<Campaign>(ItemSelected);
+                }
+
+                return itemSelectedCommand;
+            }
+        }
+
+        private async Task ItemSelected(Campaign cmp)
+        {
+
+            SelectedCampaign = null;
+            var route = $"{nameof(CampaignPage)}?CampaignId={cmp?.Id}";
+            await Shell.Current.GoToAsync(route);
+        }
+
+        private AsyncCommand newCampaign;
+        public ICommand NewCampaign
+        {
+            get
+            {
+                if (newCampaign == null)
+                {
+                    newCampaign = new AsyncCommand(PerformNewCampaign);
+                }
+
+                return newCampaign;
+            }
+        }
+
+        private async Task PerformNewCampaign()
+        {
+            await ItemSelected(null);
+        }
+
+
+    }
+}
