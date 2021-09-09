@@ -33,14 +33,20 @@ namespace CallOfCthulhuSheets.ViewModels
         public InvestigatorDetailsViewModel(Investigator investigator)
         {
             m_Investigator = investigator ?? new Investigator();
+            _ = GetCharacteristics();
             CharacteristicsOfInv = new ObservableRangeCollection<Atrr>();
-            for (var i = ECharacteristic.Str; i <= ECharacteristic.Luck; i++)
+            foreach (var i in Characteristic.CharacteristicS)
             {
                 CharacteristicsOfInv.Add(new Atrr { Name = i, Value = investigator?.Characteristic?.GetValueByEnum(i) });
             }
 
             InvSkills = new ObservableRangeCollection<InvestigatorsSkills>();
             InvSkills.AddRange(m_Investigator.InvestigatorsSkills);
+        }
+
+        async Task GetCharacteristics()
+        {
+            m_Investigator.Characteristic = await SqliteRepo.GetItemAsync<Characteristic>(m_Investigator.CharacteristicId);
         }
 
         async Task SkillsSorting()

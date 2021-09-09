@@ -5,7 +5,7 @@
              xmlns:models="clr-namespace:CallOfCthulhuSheets.Models"
              x:Class="CallOfCthulhuSheets.Views.InvestigatorDetailsPage"
              x:DataType="viewmodels:InvestigatorDetailsViewModel"
-             Title="Investigator"
+             Title="Ваш следователь"
              BackgroundColor="{StaticResource PrimBackground}">
     <ContentPage.Content>
         <ScrollView>
