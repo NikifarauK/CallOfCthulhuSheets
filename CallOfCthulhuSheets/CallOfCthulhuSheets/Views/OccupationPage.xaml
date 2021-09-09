@@ -6,7 +6,7 @@
              x:Class="CallOfCthulhuSheets.Views.OccupationPage"
              x:Name="theOccupationName"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             Title="Occupation"
+             Title="Выбор профессии"
              BackgroundColor="{StaticResource PrimBackground}">
     <ContentPage.BindingContext>
         <viewmodels:OccupationViewModel/>

@@ -90,16 +90,18 @@
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
 
-    <FlyoutItem Title="StartPage">
+    <FlyoutItem Title="Cтартовая страница">
         <ShellContent Route="StartPage" ContentTemplate="{DataTemplate views:StartPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="MainInvesigatorPage" Icon="icon_about.png">
+    <FlyoutItem Title="Следователь">
         <ShellContent Route="MainInvesigatorPage" ContentTemplate="{DataTemplate views:MainInvesigatorPage}" />
     </FlyoutItem>
-    
+    <FlyoutItem Title="Хранитель (Водить игру)">
+        <ShellContent Route="MainKeeperPage" ContentTemplate="{DataTemplate views:MainKeeperPage}" />
+    </FlyoutItem>
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
-    <MenuItem Text="Logout" StyleClass="MenuItemLayoutStyle" Clicked="OnMenuItemClicked">
+    <MenuItem Text="Выбрать другого пользователя" StyleClass="MenuItemLayoutStyle" Clicked="OnMenuItemClicked">
     </MenuItem>
 
     <!--

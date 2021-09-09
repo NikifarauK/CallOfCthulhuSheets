@@ -18,6 +18,12 @@ namespace CallOfCthulhuSheets.Models
 
         public int Age { get; set; }
 
+        public bool? IsMajorWounded{ get; set; }
+
+        public bool? IsDying       { get; set; }
+        
+        public bool? IsUnconscius  { get; set; }
+
         [MaxLength(32)]
         public string Sex { get; set; }
 
@@ -28,7 +34,7 @@ namespace CallOfCthulhuSheets.Models
 
         [ForeignKey(typeof(Characteristic))]
         public string CharacteristicId { get; set; }
-        [OneToOne(CascadeOperations = CascadeOperation.All)]
+        [ManyToOne(CascadeOperations = CascadeOperation.All)]
         public Characteristic Characteristic { get; set; }
 
         [ForeignKey(typeof(Occupation))]

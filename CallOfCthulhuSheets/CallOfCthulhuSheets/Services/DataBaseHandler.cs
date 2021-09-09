@@ -60,10 +60,13 @@ namespace CallOfCthulhuSheets.Services
         {
             try
             {
-                //TODO: create tables in connection: await DB.CreateTablesAsync(CreateFlags.None, typeof(Person)).ConfigureAwait(false);
                 _ = await DB.CreateTablesAsync(CreateFlags.None,
                     typeof(Campaign),
+                    typeof(CampaignesPCs),
+                    typeof(CampaignesNPCs),
                     typeof(Characteristic),
+                    typeof(Encounter),
+                    typeof(EncountersNPCs),
                     typeof(Investigator),
                     typeof(InvestigatorsSkills),
                     typeof(InvestigatorsItems),
@@ -72,6 +75,7 @@ namespace CallOfCthulhuSheets.Services
                     typeof(OccupSkillDependensy),
                     typeof(OccupSkillTypesDependensy),
                     typeof(Player),
+                    typeof(Session),
                     typeof(Skill),
                     typeof(SkillType)
                  ).ConfigureAwait(false);

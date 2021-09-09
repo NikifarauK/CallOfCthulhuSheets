@@ -11,44 +11,48 @@
         <ScrollView>
             <StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Label Text="{Binding Name}" FontSize="50"/>
+                    <Label Text="{Binding Name}" Style="{StaticResource BaseText}" FontSize="50"/>
                     <Label Text="{Binding Birthplace}" FontSize="20" 
                            Margin="10,30,10,0" HorizontalTextAlignment="End"
-                           HorizontalOptions="End"/>
+                           HorizontalOptions="EndAndExpand"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="30" FontSize="20" Margin="0,0,0,0"/>
-                    <Label Text="лет" FontSize="20" Margin="0,0,0,0"/>
+                    <Label Text="{Binding Age}" Style="{StaticResource BaseText}" FontSize="20" Margin="0,0,0,0"/>
+                    <Label Text="лет"          Style="{StaticResource BaseText}"  FontSize="20" Margin="0,0,0,0"/>
                 </StackLayout>
                 <CollectionView ItemsSource="{Binding CharacteristicsOfInv}"
                           ItemsLayout="HorizontalList"
                             HorizontalOptions="CenterAndExpand"
                             VerticalOptions="Start"
-                            HeightRequest="100">
+                            HeightRequest="60">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame Style="{StaticResource GrayFrame}">
-                                <StackLayout x:DataType="viewmodels:Atrr">
-                                    <Label Text="{Binding Name}" FontSize="Medium"/>
-                                    <Label Text="{Binding Value}"/>
-                                    <Switch IsToggled="{Binding IsUsed}"/>
+                                <StackLayout x:DataType="viewmodels:Atrr"
+                                             Orientation="Horizontal">
+                                    <Label Text="{Binding Name}"         TextColor="Black" VerticalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding Value}"        TextColor="Black" VerticalOptions="CenterAndExpand"/>
+                                    <Switch IsToggled="{Binding IsUsed}"                     VerticalOptions="CenterAndExpand"/>
                                 </StackLayout>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 <CollectionView ItemsSource="{Binding InvSkills}"
-                            HeightRequest="250">
+                            HeightRequest="280">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="2"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:InvestigatorsSkills">
                             <Frame Style="{StaticResource GrayFrame}" >
-                                <StackLayout >
-                                    <Label Text="{Binding Skill}"/>
-                                    <Label Text="{Binding CurrentSkillValue}"/>
-                                    <Switch IsToggled="{Binding IsSuccessfulUsed}"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Skill}"  Padding="0" Style="{StaticResource BaseText}"
+                                           HorizontalOptions="Start"/>
+                                    <Label Text="{Binding CurrentSkillValue}"  Style="{StaticResource BaseText}"
+                                           HorizontalOptions="CenterAndExpand"/>
+                                    <Switch IsToggled="{Binding IsSuccessfulUsed}" HorizontalOptions="End"/>
+
                                 </StackLayout>
                             </Frame>
                         </DataTemplate>
@@ -56,15 +60,15 @@
                 </CollectionView>
                 <!--<Button Text="Sort Skills" Command="{Binding SortSkills}" CornerRadius="12"/>-->
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="Start">
-                        <StackLayout Orientation="Horizontal">
+                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="StartAndExpand">
+                        <StackLayout Orientation="Horizontal" >
                             <Label Text="HP" FontSize="Large"/>
                             <Entry Text="{Binding CurrentHP}" FontSize="Large" BackgroundColor="{StaticResource Primary}" WidthRequest="45"/>
                             <Label Text="/" FontSize="Large"/>
                             <Label Text="{Binding MaxHP}"/>
                         </StackLayout>
                     </Frame>
-                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="Center">
+                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="CenterAndExpand">
                         <StackLayout Orientation="Horizontal">
                             <Label Text="MP" FontSize="Large"/>
                             <Entry Text="{Binding CurrentMP}" Keyboard="Numeric"
@@ -74,9 +78,9 @@
                             <Label Text="{Binding MaxMP}"/>
                         </StackLayout>
                     </Frame>
-                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="End">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Sanity" FontSize="Large" Rotation="-45" Margin="0,6,0,0"/>
+                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="EndAndExpand">
+                        <StackLayout Orientation="Horizontal" MinimumWidthRequest="130">
+                            <Label Text="Sanity" FontSize="Large" Rotation="-45" Margin="0,6,0,0" MinimumWidthRequest="80"/>
                             <Entry Text="{Binding CurrentSan}"  FontSize="Large" BackgroundColor="{StaticResource Primary}" WidthRequest="45"/>
                             <Label Text="/"/>
                             <Label Text="{Binding MaxSan}"/>

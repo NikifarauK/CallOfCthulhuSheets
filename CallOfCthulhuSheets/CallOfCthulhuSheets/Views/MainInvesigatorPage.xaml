@@ -7,7 +7,7 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:DataType="viewmodels:MainInvesigatorViewModel"
              x:Class="CallOfCthulhuSheets.Views.MainInvesigatorPage"
-             Title="Investigators"
+             Title="Ваши следователи"
              x:Name="TheMainInvestigatorPage"
              BackgroundColor="{StaticResource PrimBackground}">
     <ContentPage.BindingContext>
@@ -23,13 +23,18 @@
                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                          >
                 <CollectionView
-                SelectionMode="Single"
-                ItemsSource="{Binding Investigators}"
-                SelectedItem="{Binding SelectedInvestigator}"
-                SelectionChangedCommand="{Binding ItemSelectedCommand}"
-                SelectionChangedCommandParameter="{Binding SelectedInvestigator}"
+                    SelectionMode="Single"
+                    ItemsSource="{Binding Investigators}"
+                    SelectedItem="{Binding SelectedInvestigator}"
+                    SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                    SelectionChangedCommandParameter="{Binding SelectedInvestigator}"
                 >
-
+                    <CollectionView.EmptyView>
+                        <Frame Style="{StaticResource GrayFrame}" VerticalOptions="Center">
+                            <Label Text="Здесь будут отображаться созданные вами следователи" Style="{StaticResource BaseText}"
+                                           VerticalOptions="Center" HorizontalOptions="Center"/>
+                        </Frame>
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate  x:DataType="models:Investigator">
                             <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
@@ -78,7 +83,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.Footer>
-                        <Button Text="New" Command="{Binding NewInvestigetor}"/>
+                        <Button Text="Создать нового следователя" Command="{Binding NewInvestigetor}"/>
                     </CollectionView.Footer>
                 </CollectionView>
             </RefreshView>

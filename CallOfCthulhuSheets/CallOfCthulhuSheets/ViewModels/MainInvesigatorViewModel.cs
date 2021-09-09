@@ -70,7 +70,8 @@ namespace CallOfCthulhuSheets.ViewModels
             IsBusy = true;
 
             var inv1 = (await SqliteRepo.GetItemsAsync<Investigator>()).ToList();
-            var inv =inv1.Where((o) => o.PlayerId == Preferences.Get("CurrentPlayerId", ""));
+            var curentPlayerId = Preferences.Get("CurrentPlayerId", "");
+            var inv =inv1.Where((o) => o.PlayerId == curentPlayerId && o.IsPlayersCharacter);
             Investigators.Clear();
             Investigators.AddRange(inv);
 

@@ -14,7 +14,7 @@ namespace CallOfCthulhuSheets.Models
 
         [ForeignKey(typeof(SkillType))]
         public string SkillTypeId { get; set; }
-        [ManyToOne(CascadeOperations = CascadeOperation.CascadeRead & CascadeOperation.CascadeInsert)]
+        [ManyToOne(CascadeOperations = CascadeOperation.CascadeRead | CascadeOperation.CascadeInsert)]
         public SkillType Type { get; set; }
 
 

@@ -16,7 +16,7 @@ namespace CallOfCthulhuSheets.Models
 
         private int[] characteristics = new int[9];
 
-        public static ECharacteristic[] CharacteristicS = ((ECharacteristic[])Enum.GetValues(typeof(ECharacteristic)));
+        public readonly static ECharacteristic[] CharacteristicS = ((ECharacteristic[])Enum.GetValues(typeof(ECharacteristic)));
 
         #region Properties
         public int Str
@@ -73,9 +73,6 @@ namespace CallOfCthulhuSheets.Models
             set => characteristics[(int)ECharacteristic.Luck] = value;
         }
         #endregion
-
-        [ForeignKey(typeof(Investigator))]
-        public string InvestigatorId { get; set; }
 
         public int GetSkillPointsByBasicChracteristic(ECharacteristic basicCharcterictic)
         {

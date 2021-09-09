@@ -1,4 +1,5 @@
 ﻿using CallOfCthulhuSheets.Models;
+using System;
 using System.Collections.Generic;
 using Xamarin.CommunityToolkit.ObjectModel;
 
@@ -18,18 +19,28 @@ namespace CallOfCthulhuSheets.ViewModels
         bool? isUsed;
         public bool? IsUsed
         {
-            get => isUsed;
+            get => isUsed ?? false;
             set => SetProperty(ref isUsed, value);
         }
 
         public static List<Atrr> AttrListFromCharacteristic(Characteristic chrstic) 
         {
             var lst = new List<Atrr>();
-            for (var i = ECharacteristic.Str; i <= ECharacteristic.Luck; i++)
+            foreach (var i in Characteristic.CharacteristicS)
             {
                 lst.Add(new Atrr { name = i, val = chrstic.GetValueByEnum(i), IsUsed = false });
             }
             return lst;
+        }
+
+        public static void CharacteristicFromAtrrList(List<Atrr> attrs, ref Characteristic characteristic)
+        {
+            if (attrs.Count < Characteristic.CharacteristicS.Length)
+                throw new ArgumentException();
+            foreach(var atr in attrs)
+            {
+                characteristic.SetValueByEnum(atr.Value ?? characteristic.GetValueByEnum(atr.Name), atr.Name);
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using CallOfCthulhuSheets.Services;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace CallOfCthulhuSheets.ViewModels
 {
@@ -15,9 +16,34 @@ namespace CallOfCthulhuSheets.ViewModels
     {
         private Investigator m_Investigator;
 
-        public ObservableRangeCollection<Atrr> CharacteristicsOfInv { get; set; }
+        private ObservableRangeCollection<Atrr> characteristicsOfInv;
+        public ObservableRangeCollection<Atrr> CharacteristicsOfInv 
+        {
+            get
+            {
+                if (characteristicsOfInv == null)
+                    _ = GetCharacteristics();
+                return characteristicsOfInv;
+            }
+            set => SetProperty(ref characteristicsOfInv, value);
+        }
 
         public ObservableRangeCollection<InvestigatorsSkills> InvSkills { get; set; }
+
+        private int age;
+        public int Age
+        {
+            get
+            {
+                age = m_Investigator.Age;
+                return age;
+            }
+            set
+            {
+                if (SetProperty(ref age, value))
+                    m_Investigator.Age = value;
+            }
+        }
 
         private AsyncCommand sortSkills;
         public AsyncCommand SortSkills
@@ -34,11 +60,6 @@ namespace CallOfCthulhuSheets.ViewModels
         {
             m_Investigator = investigator ?? new Investigator();
             _ = GetCharacteristics();
-            CharacteristicsOfInv = new ObservableRangeCollection<Atrr>();
-            foreach (var i in Characteristic.CharacteristicS)
-            {
-                CharacteristicsOfInv.Add(new Atrr { Name = i, Value = investigator?.Characteristic?.GetValueByEnum(i) });
-            }
 
             InvSkills = new ObservableRangeCollection<InvestigatorsSkills>();
             InvSkills.AddRange(m_Investigator.InvestigatorsSkills);
@@ -46,13 +67,27 @@ namespace CallOfCthulhuSheets.ViewModels
 
         async Task GetCharacteristics()
         {
-            m_Investigator.Characteristic = await SqliteRepo.GetItemAsync<Characteristic>(m_Investigator.CharacteristicId);
+            if (m_Investigator.Characteristic == null)
+                m_Investigator.Characteristic = await SqliteRepo.GetItemAsync<Characteristic>(m_Investigator.CharacteristicId);
+            CharacteristicsOfInv = new ObservableRangeCollection<Atrr>();
+            foreach (var i in Characteristic.CharacteristicS)
+            {
+                CharacteristicsOfInv.Add(new Atrr { Name = i, Value = m_Investigator?.Characteristic?.GetValueByEnum(i) });
+            }
         }
 
         async Task SkillsSorting()
         {
-            var skills = (await SqliteRepo.GetItemsAsync<InvestigatorsSkills>()).Where( (o) => o.InvestigatorId == m_Investigator.Id).ToList();
-            m_Investigator.InvestigatorsSkills = skills;
+            List<InvestigatorsSkills> skills;
+            if (m_Investigator.InvestigatorsSkills == null)
+            {
+                skills = (await SqliteRepo.GetItemsAsync<InvestigatorsSkills>()).Where( (o) => o.InvestigatorId == m_Investigator.Id).ToList();
+                m_Investigator.InvestigatorsSkills = skills;
+            }
+            else
+            {
+                skills = m_Investigator.InvestigatorsSkills;
+            }
             skills.Sort(new Comparison<InvestigatorsSkills>
             (
                 (l, r) => (r.CurrentSkillValue ?? 0) - (l.CurrentSkillValue ?? 0)
