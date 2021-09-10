@@ -58,7 +58,7 @@
                                                    WidthRequest="32" Margin="10,0,0,0" 
                                                    PropertyChanged="Label_PropertyChanged"/>
                                         </StackLayout>
-                                        <Button Text="Бросить" Command="{Binding BindingContext.RandomAtrr, Source={Reference TheNewInvestigatorPage} }"
+                                        <Button Text="Ввести" Command="{Binding BindingContext.RandomAtrr, Source={Reference TheNewInvestigatorPage} }"
                                         CommandParameter="{Binding .}"
                                         IsVisible="{Binding IsUsed, Converter={StaticResource BoolInverter}}"/>
                                     </StackLayout>
@@ -106,8 +106,7 @@
                             Command="{Binding AllocateSkillPointsCommand}"/>
                 </Frame>
 
-                <Frame Style="{StaticResource GrayFrame}"  
-                       IsVisible="{Binding IsSkillsAllocated}">
+                <Frame Style="{StaticResource GrayFrame}"  >
                     <Entry Text="{Binding InvsDescription}" Placeholder="Введите описание"
                            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                            Style="{StaticResource BaseEntry}"/>

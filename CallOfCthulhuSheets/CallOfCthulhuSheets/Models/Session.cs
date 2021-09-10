@@ -17,6 +17,9 @@ namespace CallOfCthulhuSheets.Models
         public bool IsCompleted { get; set; }
 
 
+        [ForeignKey(typeof(Campaign))]
+        public string CampaignId { get; set; }
+
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Encounter> Encounters { get; set; }
     }

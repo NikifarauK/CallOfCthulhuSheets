@@ -9,7 +9,7 @@ namespace CallOfCthulhuSheets.Models
     public class Occupation : Tableable
     {
         public const int MAX_PROF_SKILLS = 8;
-
+        public static Occupation DefaultOccupation { get => new Occupation() { Id = "0", Name ="" }; }
 
         public string Name { get; set; }
 

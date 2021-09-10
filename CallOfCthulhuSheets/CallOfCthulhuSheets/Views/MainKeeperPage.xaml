@@ -20,6 +20,7 @@
                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                          >
                     <CollectionView 
+                         VerticalOptions="StartAndExpand"
                          ItemsSource="{Binding Campaigns}"
                          SelectionMode="Single"
                          SelectedItem="{Binding SelectedCampaign}"
@@ -55,7 +56,7 @@
                                                 <Label Text="{Binding Name}" />
                                                 <Label Text="{Binding Description}"  />
                                                 <Label Text="{Binding Investigators.Count, StringFormat='Количество Игроков: {0}'}"/>
-                                                <Label Text="{Binding Sessions, StringFormat='Количество сессий: {0}'}"/>
+                                                <Label Text="{Binding Sessions.Count, StringFormat='Количество сессий: {0}'}"/>
                                             </StackLayout>
                                         </Frame>
                                     </Frame>

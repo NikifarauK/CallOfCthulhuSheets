@@ -71,7 +71,7 @@ namespace CallOfCthulhuSheets.ViewModels
 
             var inv1 = (await SqliteRepo.GetItemsAsync<Investigator>()).ToList();
             var curentPlayerId = Preferences.Get("CurrentPlayerId", "");
-            var inv =inv1.Where((o) => o.PlayerId == curentPlayerId && o.IsPlayersCharacter);
+            var inv =inv1.Where((o) => o.PlayerId == curentPlayerId && o.IsPlayersCharacter).ToList();
             Investigators.Clear();
             Investigators.AddRange(inv);
 
@@ -130,7 +130,7 @@ namespace CallOfCthulhuSheets.ViewModels
 
         private async Task CreateInvestigator()
         {
-            await Shell.Current.GoToAsync($"{nameof(NewInvestigatorPage)}");
+            await Shell.Current.GoToAsync($"{nameof(NewInvestigatorPage)}?IsPC={true}");
         }
     }
 }

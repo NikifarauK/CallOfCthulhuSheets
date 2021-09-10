@@ -8,14 +8,16 @@ using CallOfCthulhuSheets.Services;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
+using System.Linq;
 using CallOfCthulhuSheets.Views;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
 namespace CallOfCthulhuSheets.ViewModels
 {
-    [QueryProperty(nameof(OccupationId), "OccupationId")]
-    [QueryProperty(nameof(AllowedSkillsString), "AllowedSkillsString")]
+    [QueryProperty(nameof(OccupationId), nameof(OccupationId))]
+    [QueryProperty(nameof(AllowedSkillsString), nameof(AllowedSkillsString))]
+    [QueryProperty(nameof(IsPC), nameof(IsPC))]
     public class NewInvestigatorViewModel : BaseViewModel
     {
 
@@ -34,6 +36,21 @@ namespace CallOfCthulhuSheets.ViewModels
             Atrribs.AddRange(lst);
         }
 
+
+        private string isPC;
+        public string IsPC
+        {
+            get => isPC;
+            set
+            {
+                if (bool.TryParse(value, out bool res))
+                {
+                    isPC = value;
+                    IsPCb = res;
+                }
+            }
+        }
+        public bool IsPCb { get; set; }
 
         public bool IsComplete
         {
@@ -82,37 +99,52 @@ namespace CallOfCthulhuSheets.ViewModels
 
         private async Task BackButton()
         {
+            var flag = false;
             if (!IsComplete ||
                 string.IsNullOrEmpty(Name) ||
                 string.IsNullOrEmpty(Birthplace) ||
                 string.IsNullOrEmpty(InvsDescription) ||
                 string.IsNullOrEmpty(sex))
             {
-                var str = await Shell.Current.DisplayActionSheet("Персонаж не завершен,\nвсе изменения будут потеряны", "cancel", "ok");
-                switch (str)
+                if (!IsPCb)
                 {
-                    default:
-                        return;
-                    case "ok":
-                        await Shell.Current.GoToAsync("..");
-                        return;
+                    var notpc = await Shell.Current.DisplayActionSheet("Сохранить в таком виде?", "Cancel", "ok");
+                    flag = notpc.Equals("ok");
+                }
+                if (!flag)
+                {
+                    var str = await Shell.Current.DisplayActionSheet("Персонаж не завершен,\nвсе изменения будут потеряны", "cancel", "ok");
+                    switch (str)
+                    {
+                        default:
+                            return;
+                        case "ok":
+                            await Shell.Current.GoToAsync("..");
+                            return;
+                    }
                 }
             }
             else
             {
+                flag = true;
+            }
+            if (flag)
+            {
+
                 var playerId = Xamarin.Essentials.Preferences.Get("CurrentPlayerId", "");
                 Player current = await SqliteRepo.GetItemAsync<Player>(playerId);
-                newInvestigator.Owner = current;
-                newInvestigator.Occupation = ChosenOccupation;
-                newInvestigator.IsPlayersCharacter = true;
-                newInvestigator.CurrentHitPoints = NewInvestigator.MaxHitPoints;
-                newInvestigator.CurrentMagicPoints = NewInvestigator.MaxMagicPoints;
-                newInvestigator.CurrentSanity = NewInvestigator.MaxSanity;
+                NewInvestigator.Owner = current;
+                NewInvestigator.Occupation = ChosenOccupation ?? Occupation.DefaultOccupation;
+                NewInvestigator.IsPlayersCharacter = IsPCb;
+                if (Atrribs.All(o => o.Value == 0))
+                    NewInvestigator.Characteristic = Characteristic.DefaultCharacteristic;
+                NewInvestigator.CurrentHitPoints = NewInvestigator.MaxHitPoints;
+                NewInvestigator.CurrentMagicPoints = NewInvestigator.MaxMagicPoints;
+                NewInvestigator.CurrentSanity = NewInvestigator.MaxSanity;
                 await SqliteRepo.AddItemAsync(newInvestigator.Characteristic);
                 await SqliteRepo.AddItemAsync(newInvestigator);
 
-                await Shell.Current.GoToAsync("..");
-
+                await Shell.Current.GoToAsync($"..?InvestigId={newInvestigator.Id}");
             }
         }
 
@@ -185,16 +217,41 @@ namespace CallOfCthulhuSheets.ViewModels
             get
             {
                 if (randomAtrr == null)
-                    randomAtrr = new AsyncCommand<Atrr>(CreateAtrr);
+                    randomAtrr = new AsyncCommand<Atrr>(EnterAttr);
                 return randomAtrr;
             }
+        }
+
+        private async Task EnterAttr(Atrr arg)
+        {
+            try
+            {
+                var dice = Dice.GetDiceOnCreation(arg.Name);
+                var str = await Shell.Current.DisplayPromptAsync($"Введите значение {arg.Name}:", $"{dice}x5", keyboard: Keyboard.Numeric);
+                if (str == null) return;
+                if (!int.TryParse(str, out int res) || res < 0)
+                {
+                    await Shell.Current.DisplayAlert("", "неверное значение", "ok");
+                    return;
+                }
+                if (IsPCb && res >= 100)
+                {
+                    await Shell.Current.DisplayAlert("", "Человек не может быть так хорош!", "ok");
+                    return;
+                }
+                arg.Value = res;
+                newInvestigator.Characteristic.SetValueByEnum(res, arg.Name);
+                arg.IsUsed = true;
+                _ = IsAtrrComplete;
+            }
+            catch (Exception e) { Debug.WriteLine("!!!!!!!!!!!!!!!!!!!!" + e.Message); }
         }
 
         private async Task CreateAtrr(Atrr arg)
         {
             try
             {
-                Dice dice = GetDiceOnCreation(arg.Name);
+                Dice dice = Dice.GetDiceOnCreation(arg.Name);
                 int diceRolledValue = dice.Roll();
                 var result = diceRolledValue * 5;
                 await Shell.Current.DisplayAlert(arg.Name.ToString() + ": " + dice, "" + diceRolledValue + " x 5 = " + result, "OK");
@@ -204,16 +261,6 @@ namespace CallOfCthulhuSheets.ViewModels
                 _ = IsAtrrComplete;
             }
             catch (Exception e) { Debug.WriteLine("!!!!!!!!!!!!!!!!!!!!" + e.Message); }
-        }
-
-        private Dice GetDiceOnCreation(ECharacteristic name)
-        {
-            Dice dice = null;
-            if (name == ECharacteristic.Siz || name == ECharacteristic.Int || name == ECharacteristic.Edu)
-                dice = new Dice(2, 6, 6);
-            else
-                dice = new Dice(3, 6);
-            return dice;
         }
 
         private AsyncCommand modifieByAgeCommand;
@@ -251,7 +298,7 @@ namespace CallOfCthulhuSheets.ViewModels
                 newInvestigator.Characteristic.Edu -= 5;
                 report += $"{ECharacteristic.Edu} = {newInvestigator.Characteristic.Edu}";
 
-                var reroll = GetDiceOnCreation(ECharacteristic.Luck).Roll() * 5;
+                var reroll = Dice.GetDiceOnCreation(ECharacteristic.Luck).Roll() * 5;
                 var result = reroll > newInvestigator.Characteristic.Luck ? reroll : newInvestigator.Characteristic.Luck;
                 foreach (var atr in Atrribs)
                 {

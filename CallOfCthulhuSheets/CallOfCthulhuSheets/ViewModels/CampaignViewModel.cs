@@ -15,6 +15,7 @@ using Xamarin.Forms;
 namespace CallOfCthulhuSheets.ViewModels
 {
     [QueryProperty(nameof(CampaignId), nameof(CampaignId))]
+    [QueryProperty(nameof(InvestigId), nameof(InvestigId))]
     public class CampaignViewModel : BaseViewModel
     {
 
@@ -24,8 +25,11 @@ namespace CallOfCthulhuSheets.ViewModels
             get => campaignId;
             set
             {
-                _ = GetCampaign(value);
-                campaignId = value;
+                if (campaignId == null)
+                {
+                    campaignId = value;
+                }
+                _ = GetCampaign(campaignId);
             }
         }
 
@@ -33,12 +37,23 @@ namespace CallOfCthulhuSheets.ViewModels
         {
             try
             {
-                if (string.IsNullOrEmpty(CampaignId))
+                if (string.IsNullOrEmpty(value))
+                {
+                    Campaign = new Campaign();
+                    return;
+                }
+                if (value.Equals("new"))
                 {
                     Campaign = new Campaign();
                     return;
                 }
                 Campaign = await SqliteRepo.GetItemAsync<Campaign>(value);
+                Name = Campaign.Name;
+                Description = Campaign.Description;
+                Sessions.Clear();
+                Sessions.AddRange(Campaign.Sessions);
+                NPCs.Clear();
+                NPCs.AddRange(Campaign.NPCs);
             }
             catch (Exception e)
             {
@@ -96,6 +111,7 @@ namespace CallOfCthulhuSheets.ViewModels
             }
         }
 
+        #region Session
         private ObservableRangeCollection<Session> sessions;
         public ObservableRangeCollection<Session> Sessions
         {
@@ -169,12 +185,12 @@ namespace CallOfCthulhuSheets.ViewModels
                 return;
             sess.Descrption = res;
 
-            if(Campaign.Sessions == null)
+            if (Campaign.Sessions == null)
             {
                 Campaign.Sessions = new List<Session>();
             }
             Campaign.Sessions.Add(sess);
-            //Sessions.Add(sess);
+            _ = Sessions;
             OnPropertyChanged(nameof(Sessions));
         }
 
@@ -196,7 +212,120 @@ namespace CallOfCthulhuSheets.ViewModels
         private async Task SessionSelected(Session session)
         {
             SelectedSession = null;
-            await Shell.Current.GoToAsync($"{nameof(SessionPage)}");
+            return;
+            //await Shell.Current.GoToAsync($"{nameof(SessionPage)}");
         }
+        #endregion
+
+        #region NPCs
+
+        public string investigId;
+        public string InvestigId
+        {
+            get => investigId;
+            set
+            {
+                if (value != null)
+                {
+                    _ = AddNpc(value);
+                }
+                investigId = value;
+            }
+        }
+
+        private async Task AddNpc(string value)
+        {
+            var npc = await SqliteRepo.GetItemAsync<Investigator>(value);
+            if (Campaign.NPCs == null)
+            {
+                Campaign.NPCs = new List<Investigator>();
+            }
+            Campaign.NPCs.Add(npc);
+            OnPropertyChanged(nameof(NPCs));
+            _ = NPCs;
+        }
+
+        private ObservableRangeCollection<Investigator> npcs;
+        public ObservableRangeCollection<Investigator> NPCs
+        {
+            get
+            {
+                if (npcs == null)
+                {
+                    npcs = new ObservableRangeCollection<Investigator>();
+                }
+                if (Campaign?.NPCs != null)
+                {
+                    npcs.Clear();
+                    npcs.AddRange(Campaign.NPCs);
+                }
+                return npcs;
+            }
+        }
+
+
+        private Investigator selectedNpc;
+        public Investigator SelectedNpc { get => selectedNpc; set => SetProperty(ref selectedNpc, value); }
+
+        private AsyncCommand<Investigator> npcSelectedCommand;
+        public AsyncCommand<Investigator> NpcSelectedCommand
+        {
+            get
+            {
+                if (npcSelectedCommand == null)
+                {
+                    npcSelectedCommand = new AsyncCommand<Investigator>(NpcSelected);
+                }
+                return npcSelectedCommand;
+            }
+        }
+
+        private Task NpcSelected(Investigator arg)
+        {
+            return Task.CompletedTask;
+        }
+
+        private AsyncCommand addNewNpcCommand;
+        public AsyncCommand AddNewNpcCommand
+        {
+            get
+            {
+                if (addNewNpcCommand == null)
+                {
+                    addNewNpcCommand = new AsyncCommand(AddNewNpc);
+                }
+                return addNewNpcCommand;
+            }
+        }
+
+        private async Task AddNewNpc()
+        {
+            await Shell.Current.GoToAsync($"{nameof(NewInvestigatorPage)}?IsPC={false}");
+        }
+
+        private AsyncCommand saveCampaignCommand;
+        public AsyncCommand SaveCampaignCommand
+        {
+            get
+            {
+                if (saveCampaignCommand == null)
+                {
+                    saveCampaignCommand = new AsyncCommand(SaveCampaign);
+                }
+                return saveCampaignCommand;
+            }
+        }
+
+        private async Task SaveCampaign()
+        {
+            var playerId = Xamarin.Essentials.Preferences.Get("CurrentPlayerId", "");
+            Player current = await SqliteRepo.GetItemAsync<Player>(playerId);
+            Campaign.Owner = current;
+            Campaign.PlayerId = current.Id;
+            await SqliteRepo.AddItemAsync(Campaign);
+            await Shell.Current.DisplayAlert("", "Сохранено", "ok");
+        }
+
+        #endregion
     }
 }

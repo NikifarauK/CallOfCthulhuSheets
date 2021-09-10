@@ -13,6 +13,7 @@ namespace CallOfCthulhuSheets.Models
 
     public class Characteristic : Tableable
     {
+        public static Characteristic DefaultCharacteristic => new Characteristic() { Id = "0" };
 
         private int[] characteristics = new int[9];
 

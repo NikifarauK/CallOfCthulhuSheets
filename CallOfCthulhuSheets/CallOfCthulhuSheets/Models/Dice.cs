@@ -44,6 +44,18 @@ namespace CallOfCthulhuSheets.Models
                 return false;
         }
 
+
+        public static Dice GetDiceOnCreation(ECharacteristic name)
+        {
+            Dice dice = null;
+            if (name == ECharacteristic.Siz || name == ECharacteristic.Int || name == ECharacteristic.Edu)
+                dice = new Dice(2, 6, 6);
+            else
+                dice = new Dice(3, 6);
+            return dice;
+        }
+
+
         public override string ToString()
         {
             if (Amount < 1)

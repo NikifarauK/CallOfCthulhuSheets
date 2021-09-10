@@ -15,13 +15,13 @@ namespace CallOfCthulhuSheets
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             //Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             //Routing.RegisterRoute(nameof(StartPage), typeof(StartPage));
-            Routing.RegisterRoute(nameof(SessionPage), typeof(SessionPage));
 
             Routing.RegisterRoute(nameof(CampaignPage), typeof(CampaignPage));
             Routing.RegisterRoute(nameof(InvestigatorDetailsPage), typeof(InvestigatorDetailsPage));
             Routing.RegisterRoute(nameof(NewInvestigatorPage), typeof(NewInvestigatorPage));
             Routing.RegisterRoute(nameof(OccupationPage), typeof(OccupationPage));
             Routing.RegisterRoute(nameof(SkillPointsPage), typeof(SkillPointsPage));
+            Routing.RegisterRoute(nameof(SessionPage), typeof(SessionPage));
 
             //Routing.RegisterRoute($"{nameof(MainInvesigatorPage)}/{nameof(InvestigatorDetailsPage)}", typeof(InvestigatorDetailsPage));
             //Routing.RegisterRoute($"{nameof(MainInvesigatorPage)}/{nameof(NewInvestigatorPage)}", typeof(NewInvestigatorPage));

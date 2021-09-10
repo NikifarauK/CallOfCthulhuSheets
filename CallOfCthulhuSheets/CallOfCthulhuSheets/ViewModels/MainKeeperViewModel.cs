@@ -18,12 +18,15 @@ namespace CallOfCthulhuSheets.ViewModels
     public class MainKeeperViewModel : BaseViewModel
     {
         private ObservableRangeCollection<Campaign> campaigns;
-        public ObservableRangeCollection<Campaign> Campaigns 
+        public ObservableRangeCollection<Campaign> Campaigns
         {
             get
             {
                 if (campaigns == null)
+                {
                     campaigns = new ObservableRangeCollection<Campaign>();
+                    _ = RefreshAsync();
+                }
                 return campaigns;
             }
         }
@@ -50,7 +53,7 @@ namespace CallOfCthulhuSheets.ViewModels
 
             var campaignes = (await SqliteRepo.GetItemsAsync<Campaign>()).ToList();
             var curentPlayerId = Preferences.Get("CurrentPlayerId", "");
-            var playersCompaignes = campaignes.Where((o) => o.PlayerId == curentPlayerId);
+            var playersCompaignes = campaignes.Where((o) => o.PlayerId == curentPlayerId).ToList();
             Campaigns.Clear();
             Campaigns.AddRange(playersCompaignes);
 
@@ -78,7 +81,7 @@ namespace CallOfCthulhuSheets.ViewModels
 
         private async Task ItemSelected(Campaign cmp)
         {
-
+            if (cmp == null) return;
             SelectedCampaign = null;
             var route = $"{nameof(CampaignPage)}?CampaignId={cmp?.Id}";
             await Shell.Current.GoToAsync(route);
@@ -100,9 +103,27 @@ namespace CallOfCthulhuSheets.ViewModels
 
         private async Task PerformNewCampaign()
         {
-            await ItemSelected(null);
+            await ItemSelected(new Campaign() {Id = "new" }); ;
         }
 
 
+        private AsyncCommand<Campaign> deleteCommand;
+        public AsyncCommand<Campaign> DeleteCommand
+        {
+            get
+            {
+                if (deleteCommand == null)
+                    deleteCommand = new AsyncCommand<Campaign>(Delete);
+                return deleteCommand;
+            }
+        }
+
+        private async Task Delete(Campaign arg)
+        {
+            IsBusy = true;
+            await SqliteRepo.DeleteItemAsync(arg);
+            await RefreshAsync();
+            IsBusy = false;
+        }
     }
 }
