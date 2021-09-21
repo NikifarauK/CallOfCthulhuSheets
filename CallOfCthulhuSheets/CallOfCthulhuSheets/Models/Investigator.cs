@@ -57,7 +57,7 @@ namespace CallOfCthulhuSheets.Models
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<InvestigatorsSkills> InvestigatorsSkills { get; set; }
 
-        [ManyToMany(typeof(InvestigatorsItems), CascadeOperations = CascadeOperation.CascadeRead)]
+        [ManyToMany(typeof(InvestigatorsItems), CascadeOperations = CascadeOperation.CascadeRead)] //TODO: think about... mb one2many to invItems nedded instaed?
         public List<Item> Inventory { get; set; }
 
         [MaxLength(512)]

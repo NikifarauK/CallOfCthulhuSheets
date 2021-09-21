@@ -26,10 +26,11 @@ namespace CallOfCthulhuSheets.Views
                     var t = sender as Label;
                     if (t == null)
                         return;
-                    AtrrCollectionView.ScrollTo(t.BindingContext);
+                    if (t.BindingContext is ViewModels.Atrr)
+                        AtrrCollectionView.ScrollTo(t.BindingContext);
                 }
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 System.Diagnostics.Debug.WriteLine(exc.Message);
             }

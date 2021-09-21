@@ -25,10 +25,7 @@ namespace CallOfCthulhuSheets.ViewModels
             get => campaignId;
             set
             {
-                if (campaignId == null)
-                {
-                    campaignId = value;
-                }
+                campaignId = value;
                 _ = GetCampaign(campaignId);
             }
         }
@@ -39,7 +36,6 @@ namespace CallOfCthulhuSheets.ViewModels
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    Campaign = new Campaign();
                     return;
                 }
                 if (value.Equals("new"))
@@ -50,10 +46,12 @@ namespace CallOfCthulhuSheets.ViewModels
                 Campaign = await SqliteRepo.GetItemAsync<Campaign>(value);
                 Name = Campaign.Name;
                 Description = Campaign.Description;
-                Sessions.Clear();
-                Sessions.AddRange(Campaign.Sessions);
-                NPCs.Clear();
-                NPCs.AddRange(Campaign.NPCs);
+                _ = Sessions;
+                _ = NPCs;
+                //Sessions.Clear();
+                //Sessions.AddRange(Campaign.Sessions);
+                //NPCs.Clear();
+                //NPCs.AddRange(Campaign.NPCs);
             }
             catch (Exception e)
             {
@@ -190,8 +188,8 @@ namespace CallOfCthulhuSheets.ViewModels
                 Campaign.Sessions = new List<Session>();
             }
             Campaign.Sessions.Add(sess);
-            _ = Sessions;
             OnPropertyChanged(nameof(Sessions));
+            _ = Sessions;
         }
 
         private AsyncCommand<Session> sessionSelectedCommand;
@@ -211,9 +209,9 @@ namespace CallOfCthulhuSheets.ViewModels
 
         private async Task SessionSelected(Session session)
         {
+            if (session == null) return;
             SelectedSession = null;
-            return;
-            //await Shell.Current.GoToAsync($"{nameof(SessionPage)}");
+            await Shell.Current.GoToAsync($"{nameof(SessionPage)}?SessionId={session.Id}");
         }
         #endregion
 
@@ -280,9 +278,10 @@ namespace CallOfCthulhuSheets.ViewModels
             }
         }
 
-        private Task NpcSelected(Investigator arg)
+        private async Task NpcSelected(Investigator arg)
         {
-            return Task.CompletedTask;
+            selectedNpc = null;
+            await Shell.Current.GoToAsync($"{nameof(InvestigatorDetailsPage)}?InvestigatorId={arg.Id}");
         }
 
         private AsyncCommand addNewNpcCommand;
@@ -315,6 +314,7 @@ namespace CallOfCthulhuSheets.ViewModels
                 return saveCampaignCommand;
             }
         }
+        #endregion
 
         private async Task SaveCampaign()
         {
@@ -326,6 +326,5 @@ namespace CallOfCthulhuSheets.ViewModels
             await Shell.Current.DisplayAlert("", "Сохранено", "ok");
         }
 
-        #endregion
     }
 }

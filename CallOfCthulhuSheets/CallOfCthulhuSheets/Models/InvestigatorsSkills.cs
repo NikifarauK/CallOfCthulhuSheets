@@ -14,7 +14,7 @@ namespace CallOfCthulhuSheets.Models
         public Skill Skill { get; set; }
 
         [Ignore]
-        public string Name { get => Skill?.Description; }
+        public string Name => Skill?.Description;
 
         [ForeignKey(typeof(Investigator))]
         public string InvestigatorId { get; set; }

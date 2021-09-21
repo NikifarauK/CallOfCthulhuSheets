@@ -31,7 +31,7 @@
                         SelectedItem="{Binding SelectedSession}"
                         SelectionChangedCommand="{Binding SessionSelectedCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedSession}"
-                >
+                    >
                         <CollectionView.EmptyView>
                             <Label Text="Здесь будут отображаться сессии вашей кампании"
                                VerticalOptions="Center"
@@ -66,6 +66,7 @@
                             Command="{Binding AddNewSession}"/>
                 </StackLayout>
             </Frame>
+            <Label Text="Список NPC" Style="{StaticResource BaseText}"/>
             <Frame Style="{StaticResource GrayFrame}" Margin="5,0">
                 <StackLayout>
                     <CollectionView SelectionMode="Single"

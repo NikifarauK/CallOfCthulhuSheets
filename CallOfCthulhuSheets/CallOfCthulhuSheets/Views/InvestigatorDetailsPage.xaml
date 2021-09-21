@@ -24,7 +24,7 @@
                           ItemsLayout="HorizontalList"
                             HorizontalOptions="CenterAndExpand"
                             VerticalOptions="Start"
-                            HeightRequest="60">
+                            HeightRequest="72">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame Style="{StaticResource GrayFrame}">
@@ -59,26 +59,28 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 <!--<Button Text="Sort Skills" Command="{Binding SortSkills}" CornerRadius="12"/>-->
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                     <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="StartAndExpand">
                         <StackLayout Orientation="Horizontal" >
                             <Label Text="HP" FontSize="Large"/>
                             <Entry Text="{Binding CurrentHP}" FontSize="Large" BackgroundColor="{StaticResource Primary}" WidthRequest="45"/>
                             <Label Text="/" FontSize="Large"/>
-                            <Label Text="{Binding MaxHP}"/>
+                            <Label Text="{Binding MaxHP}"  FontSize="Large"/>
                         </StackLayout>
                     </Frame>
-                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="CenterAndExpand">
+                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="EndAndExpand">
                         <StackLayout Orientation="Horizontal">
                             <Label Text="MP" FontSize="Large"/>
                             <Entry Text="{Binding CurrentMP}" Keyboard="Numeric"
                                    FontSize="Large" BackgroundColor="{StaticResource Primary}"
                                    WidthRequest="45"/>
                             <Label Text="/"/>
-                            <Label Text="{Binding MaxMP}"/>
+                            <Label Text="{Binding MaxMP}"  FontSize="Large"/>
                         </StackLayout>
                     </Frame>
-                    <Frame Style="{StaticResource GrayFrame}" Margin="0" HorizontalOptions="EndAndExpand">
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
+                    <Frame Style="{StaticResource GrayFrame}" Margin="0"  HorizontalOptions="StartAndExpand">
                         <StackLayout Orientation="Horizontal" MinimumWidthRequest="130">
                             <Label Text="Sanity" FontSize="Large" Rotation="-45" Margin="0,6,0,0" MinimumWidthRequest="80"/>
                             <Entry Text="{Binding CurrentSan}"  FontSize="Large" BackgroundColor="{StaticResource Primary}" WidthRequest="45"/>
@@ -86,29 +88,29 @@
                             <Label Text="{Binding MaxSan}"/>
                         </StackLayout>
                     </Frame>
-                </StackLayout>
-                <StackLayout HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
-                    <Frame Style="{StaticResource GrayFrame}">
+                    <Frame Style="{StaticResource GrayFrame}"  HorizontalOptions="StartAndExpand">
                         <StackLayout Orientation="Horizontal">
                             <Label Text="Move speed" FontSize="Large"/>
                             <Label Text="{Binding MoveSpeed}" FontSize="Large"/>
                         </StackLayout>
                     </Frame>
-                    <Frame Style="{StaticResource GrayFrame}">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Damage bonus" FontSize="Large"/>
-                            <Label Text="{Binding DamageBonus}" FontSize="Large"/>
+                </StackLayout>
+                <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                    <Frame Style="{StaticResource GrayFrame}" HorizontalOptions="StartAndExpand">
+                        <StackLayout Orientation="Horizontal"  HorizontalOptions="StartAndExpand">
+                            <Label Text="Damage bonus" FontSize="Large"  HorizontalOptions="StartAndExpand"/>
+                            <Label Text="{Binding DamageBonus}" FontSize="Large"  HorizontalOptions="StartAndExpand"/>
                         </StackLayout>
                     </Frame>
-                    <Frame Style="{StaticResource GrayFrame}">
-                        <StackLayout Orientation="Horizontal">
+                    <Frame Style="{StaticResource GrayFrame}" HorizontalOptions="EndAndExpand">
+                        <StackLayout Orientation="Horizontal"  HorizontalOptions="StartAndExpand">
                             <Label Text="Built" FontSize="Large"/>
                             <Label Text="{Binding Built}" FontSize="Large"/>
                         </StackLayout>
                     </Frame>
                 </StackLayout>
 
-                <Button Text="Roll Percentage" Style="{StaticResource GreyButton}" Command="{Binding RollPercentage}"/>
+                <Button Text="Бросить процентный кубик" Style="{StaticResource GreyButton}" Command="{Binding RollPercentage}"/>
                 <Button Text=""/>
             </StackLayout>
         </ScrollView>

@@ -26,24 +26,24 @@ namespace CallOfCthulhuSheets.Services
             var dbPath = Path.Combine(dbFolder, dbName);
 
 
-            //if (!File.Exists(dbPath))
-            //{
-            //    var assembly = IntrospectionExtensions.GetTypeInfo(typeof(DataBaseHandler)).Assembly;
-            //    var stream = assembly.GetManifestResourceStream($"CallOfCthulhuSheets.{dbName}");
-            //    using (var binaryReader = new BinaryReader(stream))
-            //    {
-            //        using (var binaryWriter = new BinaryWriter(new FileStream(dbPath, FileMode.Create)))
-            //        {
-            //            byte[] buffer = new byte[2048];
-            //            int length = 0, iter = 0;
-            //            while ((length = binaryReader.Read(buffer, 0, buffer.Length)) > 0)
-            //            {
-            //                binaryWriter.Write(buffer, 0, length);
-            //                ++iter;
-            //            }
-            //        }
-            //    }
-            //}
+            if (!File.Exists(dbPath))
+            {
+                var assembly = IntrospectionExtensions.GetTypeInfo(typeof(DataBaseHandler)).Assembly;
+                var stream = assembly.GetManifestResourceStream($"CallOfCthulhuSheets.{dbName}");
+                using (var binaryReader = new BinaryReader(stream))
+                {
+                    using (var binaryWriter = new BinaryWriter(new FileStream(dbPath, FileMode.Create)))
+                    {
+                        byte[] buffer = new byte[2048];
+                        int length = 0, iter = 0;
+                        while ((length = binaryReader.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            binaryWriter.Write(buffer, 0, length);
+                            ++iter;
+                        }
+                    }
+                }
+            }
 
             //var t = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Sample.db");
             return new SQLiteAsyncConnection(dbPath,
