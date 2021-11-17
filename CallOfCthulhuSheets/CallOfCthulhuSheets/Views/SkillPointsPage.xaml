@@ -8,7 +8,7 @@
              x:Class="CallOfCthulhuSheets.Views.SkillPointsPage"
              x:Name="TheSkillPointsPage"
              BackgroundColor="{StaticResource PrimBackground}"
-             Title="Skill Points">
+             Title="Очки навыков">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackButtonCommand}"/>
     </Shell.BackButtonBehavior>

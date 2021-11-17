@@ -23,7 +23,6 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Label Text="Новый Сыщик" Style="{StaticResource BaseText}" FontSize="Large" HorizontalOptions="Center"/>
                 <Frame Style="{StaticResource GrayFrame}">
                     <StackLayout>
                         <Entry Text="{Binding Name}" Placeholder="Имя" FontSize="Large"/>
@@ -73,11 +72,11 @@
                                      HorizontalOptions="FillAndExpand"
                                      IsVisible="{Binding IsAtrrModified}">
                             <Label Text="Очки Жизни" Margin="0,10,0,0" Style="{StaticResource BaseText}" FontSize="Medium"/>
-                            <Label Text="{Binding NewInvestigator.MaxHitPoints}" Margin="0,10,0,0" Style="{StaticResource BaseText}" FontSize="Large"/>
+                            <Label Text="{Binding NewInvestigator.MaxHitPoints}" WidthRequest="35" Margin="0,10,0,0" Style="{StaticResource BaseText}" FontSize="Large"/>
                             <Label Text="Очки Магии" Margin="5,10,0,0" Style="{StaticResource BaseText}" FontSize="Medium"/>
-                            <Label Text="{Binding NewInvestigator.MaxMagicPoints}" Margin="0,10,0,0" Style="{StaticResource BaseText}" FontSize="Large"/>
+                            <Label Text="{Binding NewInvestigator.MaxMagicPoints}" WidthRequest="35" Margin="0,10,0,0" Style="{StaticResource BaseText}" FontSize="Large"/>
                             <Label Text="Разумность" Margin="5,10,0,0" Style="{StaticResource BaseText}" FontSize="Medium"/>
-                            <Label Text="{Binding NewInvestigator.MaxSanity}" Margin="2,10,0,0" Style="{StaticResource BaseText}" FontSize="Large"/>
+                            <Label Text="{Binding NewInvestigator.MaxSanity}"  WidthRequest="35" Margin="2,10,0,0" Style="{StaticResource BaseText}" FontSize="Large"/>
                         </StackLayout>
                     </StackLayout>
                 </Frame>

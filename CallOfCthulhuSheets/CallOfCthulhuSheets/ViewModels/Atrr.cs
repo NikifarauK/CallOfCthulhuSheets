@@ -33,13 +33,13 @@ namespace CallOfCthulhuSheets.ViewModels
             return lst;
         }
 
-        public static void CharacteristicFromAtrrList(List<Atrr> attrs, ref Characteristic characteristic)
+        public static void CharacteristicFromAtrrList(List<Atrr> attrs, ref Characteristic characteristic, bool isPlayers)
         {
             if (attrs.Count < Characteristic.CharacteristicS.Length)
                 throw new ArgumentException();
             foreach(var atr in attrs)
             {
-                characteristic.SetValueByEnum(atr.Value ?? characteristic.GetValueByEnum(atr.Name), atr.Name);
+                characteristic.SetValueByEnum(atr.Value ?? characteristic.GetValueByEnum(atr.Name), atr.Name, isPlayers);
             }
         }
     }

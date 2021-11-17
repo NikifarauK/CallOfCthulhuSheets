@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:CallOfCthulhuSheets.ViewModels"
+             xmlns:models="clr-namespace:CallOfCthulhuSheets.Models"
+             x:Class="CallOfCthulhuSheets.Views.BattlePage"
+             x:DataType="viewmodels:BattleViewModel"
+             Title="Очередь ходов"
+             BackgroundColor="{StaticResource PrimBackground}">
+    <ContentPage.BindingContext>
+        <viewmodels:BattleViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Style="{StaticResource GrayFrame}">
+                <StackLayout>
+
+                    <CollectionView ItemsSource="{Binding Investigators}" 
+                           SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Investigator">
+                                <Frame Style="{StaticResource GrayFrame}" 
+                                       BackgroundColor="Transparent"
+                                        CornerRadius="3">
+                                    <StackLayout>
+                                            <Label Text="{Binding Name}" Style="{StaticResource BaseText}"/>
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                            <Label Text="персонаж иргока" Style="{StaticResource BaseText}"/>
+                                            <CheckBox IsEnabled="False" HorizontalOptions="EndAndExpand"
+                                                      IsChecked="{Binding IsPlayersCharacter}"/>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                        <Label Text="{Binding Speed, StringFormat='Скорость {0}'}" Style="{StaticResource BaseText}" HorizontalOptions="StartAndExpand"/>
+                                            <Label Text="{Binding CurrentHitPoints, StringFormat='Текущее здоровье {0}'}" Style="{StaticResource BaseText}" HorizontalOptions="EndAndExpand"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Button Text="Следующий раунд"/>
+                    <Button Text="Добавить персонажа"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

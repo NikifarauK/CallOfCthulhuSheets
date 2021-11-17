@@ -103,7 +103,7 @@ namespace CallOfCthulhuSheets.ViewModels
 
         private async Task PerformNewCampaign()
         {
-            await ItemSelected(new Campaign() {Id = "new" }); ;
+            await ItemSelected(new Campaign() { Id = "new" }); ;
         }
 
 

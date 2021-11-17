@@ -75,7 +75,7 @@ namespace CallOfCthulhuSheets.ViewModels
             {
                 if (name == null)
                 {
-                    name = Campaign.Name;
+                    name = Campaign?.Name;
                 }
                 return name;
             }
@@ -96,7 +96,7 @@ namespace CallOfCthulhuSheets.ViewModels
             {
                 if (description == null)
                 {
-                    description = Campaign.Description;
+                    description = Campaign?.Description;
                 }
                 return description;
             }

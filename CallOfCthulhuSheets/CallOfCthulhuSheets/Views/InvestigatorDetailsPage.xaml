@@ -5,7 +5,7 @@
              xmlns:models="clr-namespace:CallOfCthulhuSheets.Models"
              x:Class="CallOfCthulhuSheets.Views.InvestigatorDetailsPage"
              x:DataType="viewmodels:InvestigatorDetailsViewModel"
-             Title="Ваш следователь"
+             Title="Ваш персонаж"
              BackgroundColor="{StaticResource PrimBackground}">
     <ContentPage.Content>
         <ScrollView>
@@ -25,6 +25,9 @@
                             HorizontalOptions="CenterAndExpand"
                             VerticalOptions="Start"
                             HeightRequest="72">
+                    <CollectionView.EmptyView>
+                        <Label Text="Нет доступных харатеристик" Style="{StaticResource BaseText}"/>
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame Style="{StaticResource GrayFrame}">
@@ -40,6 +43,9 @@
                 </CollectionView>
                 <CollectionView ItemsSource="{Binding InvSkills}"
                             HeightRequest="280">
+                    <CollectionView.EmptyView>
+                        <Label Text="Нет доступных навыков" Style="{StaticResource BaseText}"/>
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="2"/>
                     </CollectionView.ItemsLayout>
@@ -49,8 +55,8 @@
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Skill}"  Padding="0" Style="{StaticResource BaseText}"
                                            HorizontalOptions="Start"/>
-                                    <Label Text="{Binding CurrentSkillValue}"  Style="{StaticResource BaseText}"
-                                           HorizontalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding CurrentSkillValue}"  WidthRequest="40"  Style="{StaticResource BaseText}"
+                                           FontSize="18" HorizontalOptions="CenterAndExpand"/>
                                     <Switch IsToggled="{Binding IsSuccessfulUsed}" HorizontalOptions="End"/>
 
                                 </StackLayout>

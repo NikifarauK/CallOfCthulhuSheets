@@ -14,6 +14,16 @@ namespace CallOfCthulhuSheets.Models
     public class Characteristic : Tableable
     {
         public static Characteristic DefaultCharacteristic => new Characteristic() { Id = "0" };
+        public static Characteristic GetRandomCharacteristic()
+        {
+            var ch = new Characteristic();
+            var dice = new Dice(3, 6);
+            foreach(var c in CharacteristicS)
+            {
+                ch.SetValueByEnum(dice.Roll() * 5, c, true);
+            }
+            return ch;
+        }
 
         private int[] characteristics = new int[9];
 
@@ -88,9 +98,9 @@ namespace CallOfCthulhuSheets.Models
             return characteristics[(int)enumer];
         }
 
-        public void SetValueByEnum(int val, ECharacteristic enumer)
+        public void SetValueByEnum(int val, ECharacteristic enumer, bool isPlayers)
         {
-            if (val > 99) val = 99;
+            if (isPlayers && val > 99) val = 99;
             characteristics[(int)enumer] = val;
         }
 

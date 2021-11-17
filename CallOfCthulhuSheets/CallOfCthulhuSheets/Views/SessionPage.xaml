@@ -5,19 +5,47 @@
              xmlns:models="clr-namespace:CallOfCthulhuSheets.Models"
              x:Class="CallOfCthulhuSheets.Views.SessionPage"
              x:DataType="viewmodels:SessionViewModel"
-             Title="{Binding SessionId}"
+             Title="Сессия 1"
              BackgroundColor="{StaticResource PrimBackground}"
              >
     <ContentPage.BindingContext>
         <viewmodels:SessionViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Binding Number}" Style="{StaticResource BaseText}"/>
-                <Label Text="Binding Name}" Style="{StaticResource BaseText}"/>
+        <ScrollView>
+
+            <StackLayout>
+                <Frame Style="{StaticResource GrayFrame}">
+                    <StackLayout>
+                        <Label Text="Первая встрпеча" Style="{StaticResource BaseText}" VerticalOptions="End"/>
+                        <Entry Placeholder="Пометки о сессии" Style="{StaticResource BaseEntry}" FontSize="Large"/>
+                    </StackLayout>
+                </Frame>
+                <Frame Style="{StaticResource GrayFrame}">
+                    <StackLayout>
+                        
+                    <CollectionView ItemsSource="{Binding Encounters}" 
+                           HeightRequest="450"
+                           SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Encounter">
+                                <Frame Style="{StaticResource GrayFrame}" 
+                                       BackgroundColor="Transparent"
+                                        CornerRadius="3">
+                                    <StackLayout>
+                                        <Label Text="{Binding Description}" Style="{StaticResource BaseText}"/>
+                                        <Label Text="{Binding EncounterType}" Style="{StaticResource BaseText}"/>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                        <Button Text="Добавить событие"/>
+                    </StackLayout>
+                </Frame>
+                <Button Text="Показать страницу очереди"
+                        Command="{Binding GoToBattlePage}"/>
             </StackLayout>
-            
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

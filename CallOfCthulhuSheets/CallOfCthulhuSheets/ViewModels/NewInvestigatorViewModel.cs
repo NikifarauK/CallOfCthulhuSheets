@@ -240,7 +240,7 @@ namespace CallOfCthulhuSheets.ViewModels
                     return;
                 }
                 arg.Value = res;
-                newInvestigator.Characteristic.SetValueByEnum(res, arg.Name);
+                newInvestigator.Characteristic.SetValueByEnum(res, arg.Name, IsPCb);
                 arg.IsUsed = true;
                 _ = IsAtrrComplete;
             }
@@ -256,7 +256,7 @@ namespace CallOfCthulhuSheets.ViewModels
                 var result = diceRolledValue * 5;
                 await Shell.Current.DisplayAlert(arg.Name.ToString() + ": " + dice, "" + diceRolledValue + " x 5 = " + result, "OK");
                 arg.Value = result;
-                newInvestigator.Characteristic.SetValueByEnum(result, arg.Name);
+                newInvestigator.Characteristic.SetValueByEnum(result, arg.Name, IsPCb);
                 arg.IsUsed = true;
                 _ = IsAtrrComplete;
             }
@@ -375,21 +375,21 @@ namespace CallOfCthulhuSheets.ViewModels
                     if (atrr.Name == ECharacteristic.Str)
                     {
                         atrr.Value = lst[0];
-                        newInvestigator.Characteristic.SetValueByEnum(lst[0], ECharacteristic.Str);
+                        newInvestigator.Characteristic.SetValueByEnum(lst[0], ECharacteristic.Str, IsPCb);
 
                         report += $"{ECharacteristic.Str} = {atrr.Value}\n";
                     }
                     else if (atrr.Name == ECharacteristic.Con)
                     {
                         atrr.Value = lst[1];
-                        newInvestigator.Characteristic.SetValueByEnum(lst[1], ECharacteristic.Con);
+                        newInvestigator.Characteristic.SetValueByEnum(lst[1], ECharacteristic.Con, IsPCb);
 
                         report += $"{ECharacteristic.Con} = {atrr.Value}\n";
                     }
                     else if (atrr.Name == ECharacteristic.Dex)
                     {
                         atrr.Value = lst[2];
-                        newInvestigator.Characteristic.SetValueByEnum(lst[2], ECharacteristic.Dex);
+                        newInvestigator.Characteristic.SetValueByEnum(lst[2], ECharacteristic.Dex, IsPCb);
 
                         report += $"{ECharacteristic.Dex} = {atrr.Value}\n";
                     }

@@ -19,7 +19,7 @@ namespace CallOfCthulhuSheets.Services
             SqliteRepo.db = db;
         }
 
-        public static async Task AddItemAsync<T>(T item) where T : Tableable
+        public static async Task AddItemAsync<T>(T item) where T : Tableable, new()
         {
             try
             {

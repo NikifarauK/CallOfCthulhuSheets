@@ -14,17 +14,18 @@
         <viewmodels:CampaignViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Frame Style="{StaticResource GrayFrame}">
-                <StackLayout>
-                    <Entry Text="{Binding Name}" Placeholder="Название кампании"        Style="{StaticResource BaseEntry}" />
-                    <Entry Text="{Binding Description}" Placeholder="Описание кампании" Style="{StaticResource BaseEntry}" />
-                </StackLayout>
-            </Frame>
-            <Label Text="Список сессий" Style="{StaticResource BaseText}"/>
-            <Frame Style="{StaticResource GrayFrame}" Margin="5,0">
-                <StackLayout>
-                    <CollectionView SelectionMode="Single"
+        <ScrollView>
+            <StackLayout>
+                <Frame Style="{StaticResource GrayFrame}">
+                    <StackLayout>
+                        <Entry Text="{Binding Name}" Placeholder="Название кампании"        Style="{StaticResource BaseEntry}" />
+                        <Entry Text="{Binding Description}" Placeholder="Описание кампании" Style="{StaticResource BaseEntry}" />
+                    </StackLayout>
+                </Frame>
+                <Label Text="Список сессий" Style="{StaticResource BaseText}"/>
+                <Frame Style="{StaticResource GrayFrame}" Margin="5,0">
+                    <StackLayout>
+                        <CollectionView SelectionMode="Single"
                          VerticalOptions="StartAndExpand"
                         HeightRequest="180"
                         ItemsSource="{Binding Sessions}"
@@ -32,44 +33,45 @@
                         SelectionChangedCommand="{Binding SessionSelectedCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedSession}"
                     >
-                        <CollectionView.EmptyView>
-                            <Label Text="Здесь будут отображаться сессии вашей кампании"
+                            <CollectionView.EmptyView>
+                                <Label Text="Здесь будут отображаться сессии вашей кампании"
                                VerticalOptions="Center"
                                Style="{StaticResource BaseText}"/>
-                        </CollectionView.EmptyView>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Session">
-                                <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
-                                    <SwipeView.RightItems>
-                                        <SwipeItems>
-                                            <SwipeItem BackgroundColor="Red"
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Session">
+                                    <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItem BackgroundColor="Red"
                                                    Command="{Binding BindingContext.DeleteCommand, Source={Reference TheCampaignPage}}"
                                                    CommandParameter="{Binding .}"
                                                    IsDestructive="True"
                                                    Text="Delete" />
-                                        </SwipeItems>
-                                    </SwipeView.RightItems>
-                                    <Frame Style="{StaticResource GrayFrame}">
-                                        <StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Entry Text="{Binding Number}" Style="{StaticResource BaseEntry}"/>
-                                                <Entry Text="{Binding Name}" Style="{StaticResource BaseEntry}"/>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+                                        <Frame Style="{StaticResource GrayFrame}">
+                                            <StackLayout>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Number}" Style="{StaticResource BaseText}"/>
+                                                    <Entry Text="{Binding Name}" Style="{StaticResource BaseEntry}"/>
+                                                </StackLayout>
+                                                <Entry Text="{Binding Descrption}" Style="{StaticResource BaseEntry}"/>
                                             </StackLayout>
-                                            <Entry Text="{Binding Descrption}" Style="{StaticResource BaseEntry}"/>
-                                        </StackLayout>
-                                    </Frame>
-                                </SwipeView>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <Button Text="Добавить новую"
+                                        </Frame>
+                                    </SwipeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Button Text="Добавить новую сессию"
                             Command="{Binding AddNewSession}"/>
-                </StackLayout>
-            </Frame>
-            <Label Text="Список NPC" Style="{StaticResource BaseText}"/>
-            <Frame Style="{StaticResource GrayFrame}" Margin="5,0">
-                <StackLayout>
-                    <CollectionView SelectionMode="Single"
+                    </StackLayout>
+                </Frame>
+                
+                <Label Text="Список NPC" Style="{StaticResource BaseText}"/>
+                <Frame Style="{StaticResource GrayFrame}" Margin="5,0">
+                    <StackLayout>
+                        <CollectionView SelectionMode="Single"
                          VerticalOptions="StartAndExpand"
                         HeightRequest="180"
                         ItemsSource="{Binding NPCs}"
@@ -77,41 +79,42 @@
                         SelectionChangedCommand="{Binding NpcSelectedCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedNpc}"
                 >
-                        <CollectionView.EmptyView>
-                            <Label Text="Здесь будут отображаться NPC вашей кампании"
+                            <CollectionView.EmptyView>
+                                <Label Text="Здесь будут отображаться NPC вашей кампании"
                                VerticalOptions="Center"
                                Style="{StaticResource BaseText}"/>
-                        </CollectionView.EmptyView>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Investigator">
-                                <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
-                                    <SwipeView.RightItems>
-                                        <SwipeItems>
-                                            <SwipeItem BackgroundColor="Red"
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Investigator">
+                                    <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItem BackgroundColor="Red"
                                                    Command="{Binding BindingContext.DeleteNpcCommand, Source={Reference TheCampaignPage}}"
                                                    CommandParameter="{Binding .}"
                                                    IsDestructive="True"
                                                    Text="Delete" />
-                                        </SwipeItems>
-                                    </SwipeView.RightItems>
-                                    <Frame Style="{StaticResource GrayFrame}">
-                                        <StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Entry Text="{Binding Name}" Style="{StaticResource BaseEntry}"/>
-                                                <Entry Text="{Binding Sex}" Style="{StaticResource BaseEntry}"/>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+                                        <Frame Style="{StaticResource GrayFrame}">
+                                            <StackLayout>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Name}" Style="{StaticResource BaseText}"/>
+                                                    <Label Text="{Binding Sex}" Style="{StaticResource BaseText}"/>
+                                                </StackLayout>
+                                                <Label Text="{Binding Description}" Style="{StaticResource BaseText}"/>
                                             </StackLayout>
-                                            <Entry Text="{Binding Description}" Style="{StaticResource BaseEntry}"/>
-                                        </StackLayout>
-                                    </Frame>
-                                </SwipeView>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <Button Text="Добавить нового NPC"
+                                        </Frame>
+                                    </SwipeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Button Text="Добавить нового NPC"
                             Command="{Binding AddNewNpcCommand}"/>
-                </StackLayout>
-            </Frame>
-            <Button Text="Сохранить кампанию" Command="{Binding SaveCampaignCommand}"/>
-        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <Button Text="Сохранить кампанию" Command="{Binding SaveCampaignCommand}"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -63,6 +63,8 @@ namespace CallOfCthulhuSheets.Models
         [MaxLength(512)]
         public string Description { get; set; }
 
+        [Ignore]
+        public int Speed => GetMoveRate();
 
         public int GetMoveRate() //KRB page 33
         {

@@ -22,7 +22,9 @@
             <RefreshView Command="{Binding RefreshAsyncCommand}"
                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                          >
-                <CollectionView
+                <StackLayout>
+
+                    <CollectionView
                     VerticalOptions="StartAndExpand"
                     SelectionMode="Single"
                     ItemsSource="{Binding Investigators}"
@@ -30,63 +32,62 @@
                     SelectionChangedCommand="{Binding ItemSelectedCommand}"
                     SelectionChangedCommandParameter="{Binding SelectedInvestigator}"
                 >
-                    <CollectionView.EmptyView>
-                        <Frame Style="{StaticResource GrayFrame}" VerticalOptions="Center">
-                            <Label Text="Здесь будут отображаться созданные вами следователи" Style="{StaticResource BaseText}"
+                        <CollectionView.EmptyView>
+                            <Frame Style="{StaticResource GrayFrame}" VerticalOptions="Center">
+                                <Label Text="Здесь будут отображаться созданные вами следователи" Style="{StaticResource BaseText}"
                                            VerticalOptions="Center" HorizontalOptions="Center"/>
-                        </Frame>
-                    </CollectionView.EmptyView>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate  x:DataType="models:Investigator">
-                            <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
-                                <SwipeView.RightItems>
-                                    <SwipeItems>
-                                        <SwipeItem BackgroundColor="Red"
+                            </Frame>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate  x:DataType="models:Investigator">
+                                <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem BackgroundColor="Red"
                                                    Command="{Binding BindingContext.DeleteCommand, Source={Reference TheMainInvestigatorPage}}"
                                                    CommandParameter="{Binding .}"
                                                    IsDestructive="True"
                                                    Text="Delete" />
-                                    </SwipeItems>
-                                </SwipeView.RightItems>
-                                <Frame Style="{StaticResource GrayFrame}" 
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Frame Style="{StaticResource GrayFrame}" 
                                        Padding="5"
                                        Margin="5"
                                        BackgroundColor="#22256323">
-                                    <Grid Padding="2"
+                                        <Grid Padding="2"
                               HorizontalOptions="FillAndExpand">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="3*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="1*"/>
-                                            <RowDefinition Height="1*"/>
-                                        </Grid.RowDefinitions>
-                                        <Label Text="{Binding Name}" Style="{StaticResource BaseText}"
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1*"/>
+                                                <RowDefinition Height="1*"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Text="{Binding Name}" Style="{StaticResource BaseText}"
                                            Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
-                                        <Label Text="{Binding Age, StringFormat='возраст: {0}'}" Style="{StaticResource BaseText}"
+                                            <Label Text="{Binding Age, StringFormat='возраст: {0}'}" Style="{StaticResource BaseText}"
                                            Grid.Column="2" Grid.Row="0"/>
-                                        <Label Text="{Binding Birthplace}" Style="{StaticResource BaseText}"
+                                            <Label Text="{Binding Birthplace}" Style="{StaticResource BaseText}"
                                            FontSize="Small" Grid.Column="3" Grid.Row="0"/>
-                                        <Label Text="{Binding CurrentHitPoints, StringFormat='ХП: {0}'}"
+                                            <Label Text="{Binding CurrentHitPoints, StringFormat='ХП: {0}'}"
                                            Grid.Column="0" Grid.Row="1" BackgroundColor="Green"/>
-                                        <Label Text="{Binding CurrentSanity, StringFormat='san: {0}'}"
+                                            <Label Text="{Binding CurrentSanity, StringFormat='san: {0}'}"
                                            Grid.Column="1" Grid.Row="1" BackgroundColor="DarkGoldenrod"/>
-                                        <Label Text="{Binding CurrentMagicPoints, StringFormat='МП: {0}'}"
+                                            <Label Text="{Binding CurrentMagicPoints, StringFormat='МП: {0}'}"
                                            Grid.Column="2" Grid.Row="1" BackgroundColor="Blue"/>
-                                        <Label Text="{Binding Occupation}"
+                                            <Label Text="{Binding Occupation}"
                                            Grid.Column="3" Grid.Row="1" BackgroundColor="Gray"/>
-                                    </Grid>
-                                </Frame>
-                            </SwipeView>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                    <CollectionView.Footer>
-                        <Button Text="Создать нового следователя" Command="{Binding NewInvestigetor}"/>
-                    </CollectionView.Footer>
-                </CollectionView>
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Button Text="Создать нового следователя" Command="{Binding NewInvestigetor}"/>
+                </StackLayout>
             </RefreshView>
         </Frame>
     </ContentPage.Content>
