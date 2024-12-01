@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CallOfCthulhuSheets.Models"
+             xmlns:viewmodels="clr-namespace:CallOfCthulhuSheets.ViewModels"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewmodels:MainInvesigatorViewModel"
+             x:Class="CallOfCthulhuSheets.Views.MainInvestigatorPage"
+             Title="Ваши следователи"
+             x:Name="TheMainInvestigatorPage"
+             BackgroundColor="{StaticResource PrimBackground}">
+    <ContentPage.BindingContext>
+        <viewmodels:MainInvesigatorViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Frame Style="{StaticResource Key=GrayFrame}" Margin="10">
+            <RefreshView Command="{Binding RefreshAsyncCommand}"
+                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                         >
+                <StackLayout>
+
+                    <CollectionView
+                    VerticalOptions="StartAndExpand"
+                    SelectionMode="Single"
+                    ItemsSource="{Binding Investigators}"
+                    SelectedItem="{Binding SelectedInvestigator}"
+                    SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                    SelectionChangedCommandParameter="{Binding SelectedInvestigator}"
+                >
+                        <CollectionView.EmptyView>
+                            <Frame Style="{StaticResource GrayFrame}" VerticalOptions="Center">
+                                <Label Text="Здесь будут отображаться созданные вами следователи" Style="{StaticResource BaseText}"
+                                           VerticalOptions="Center" HorizontalOptions="Center"/>
+                            </Frame>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate  x:DataType="models:Investigator">
+                                <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem BackgroundColor="Red"
+                                                   Command="{Binding BindingContext.DeleteCommand, Source={Reference TheMainInvestigatorPage}}"
+                                                   CommandParameter="{Binding .}"
+                                                   IsDestructive="True"
+                                                   Text="Delete" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Frame Style="{StaticResource GrayFrame}" 
+                                       Padding="5"
+                                       Margin="5"
+                                       BackgroundColor="#22256323">
+                                        <Grid Padding="2"
+                              HorizontalOptions="FillAndExpand">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1*"/>
+                                                <RowDefinition Height="1*"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Text="{Binding Name}" Style="{StaticResource BaseText}"
+                                           Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+                                            <Label Text="{Binding Age, StringFormat='возраст: {0}'}" Style="{StaticResource BaseText}"
+                                           Grid.Column="2" Grid.Row="0"/>
+                                            <Label Text="{Binding Birthplace}" Style="{StaticResource BaseText}"
+                                           FontSize="Small" Grid.Column="3" Grid.Row="0"/>
+                                            <Label Text="{Binding CurrentHitPoints, StringFormat='ХП: {0}'}"
+                                           Grid.Column="0" Grid.Row="1" BackgroundColor="Green"/>
+                                            <Label Text="{Binding CurrentSanity, StringFormat='san: {0}'}"
+                                           Grid.Column="1" Grid.Row="1" BackgroundColor="DarkGoldenrod"/>
+                                            <Label Text="{Binding CurrentMagicPoints, StringFormat='МП: {0}'}"
+                                           Grid.Column="2" Grid.Row="1" BackgroundColor="Blue"/>
+                                            <Label Text="{Binding Occupation}"
+                                           Grid.Column="3" Grid.Row="1" BackgroundColor="Gray"/>
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Button Text="Создать нового следователя" Command="{Binding NewInvestigetor}"/>
+                </StackLayout>
+            </RefreshView>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

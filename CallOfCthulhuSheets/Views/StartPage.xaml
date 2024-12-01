@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:CallOfCthulhuSheets.ViewModels"
+             x:Class="CallOfCthulhuSheets.Views.StartPage"
+             x:DataType="viewmodels:StartViewModel"
+             BackgroundColor="{StaticResource PrimBackground}"
+             >
+    <ContentPage.BindingContext>
+        <viewmodels:StartViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Откройте боковое меню что бы выбрать режим"
+                   FontSize="20"
+                   VerticalOptions="Start"/>
+            <Label Text="Welcome to 
+                   Call Of Cthulhu Sheets!"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   FontSize="58"
+                   TextColor="Black"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+           xmlns:views="clr-namespace:CallOfCthulhuSheets.Views"
+           Size="400, 400"
+           x:DataType="views:OldInvestigatorPopup"
+           x:Class="CallOfCthulhuSheets.Views.OldInvestigatorPopup">
+    <StackLayout>
+        <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="Нужно уменьшить на" FontSize="Large"/>
+            <Label x:Name="NumberToDeminish" FontSize="Header"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Str" FontSize="Medium" WidthRequest="35"/>
+            <Slider VerticalOptions="Center" WidthRequest="150" 
+                    HorizontalOptions="CenterAndExpand" x:Name="StrSlider" 
+                    Minimum="0" ValueChanged="StrSlider_ValueChanged"/>
+            <Stepper Value="{Binding Source={x:Reference StrSlider}, Path=Value, Mode=TwoWay}" WidthRequest="50"/>
+            <Label x:Name="StrLabel" FontSize="Medium" Padding="5"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Con" FontSize="Medium" WidthRequest="35"/>
+            <Slider VerticalOptions="Center" WidthRequest="150"
+                    HorizontalOptions="CenterAndExpand"  x:Name="ConSlider" 
+                    Minimum="0" ValueChanged="ConSlider_ValueChanged"/>
+            <Stepper Value="{Binding Source={x:Reference ConSlider}, Path=Value, Mode=TwoWay}" WidthRequest="50"/>
+            <Label x:Name="ConLabel" FontSize="Medium" Padding="5"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Dex" FontSize="Medium" WidthRequest="35"/>
+            <Slider VerticalOptions="Center" WidthRequest="150" 
+                    HorizontalOptions="CenterAndExpand"  x:Name="DexSlider"
+                    Minimum="0" ValueChanged="DexSlider_ValueChanged"/>
+            <Stepper Value="{Binding Source={x:Reference DexSlider}, Path=Value, Mode=TwoWay}" WidthRequest="50"/>
+            <Label x:Name="DexLabel" FontSize="Medium" Padding="5"/>
+        </StackLayout>
+        <Button Text="Ok" Clicked="Button_Clicked"/>
+    </StackLayout>
+</xct:Popup>

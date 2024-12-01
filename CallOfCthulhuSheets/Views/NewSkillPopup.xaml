@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+           xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:views="clr-namespace:CallOfCthulhuSheets.Views"
+           x:Class="CallOfCthulhuSheets.Views.NewSkillPopup"
+           Size="400, 400"
+           x:DataType="views:NewSkillPopup"
+           >
+
+    <StackLayout>
+        <Label Text="Введите данные о новом навыке"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+        <Entry Placeholder="Название(англ)" x:Name="NameEntry" Style="{StaticResource BaseEntry}"/>
+        <Entry Placeholder="Описание(название на русском)" x:Name="DescrEntry" Style="{StaticResource BaseEntry}"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Базовое умение" Style="{StaticResource BaseText}"/>
+            <Entry Placeholder="Базовые баллы" Keyboard="Numeric" x:Name="PointsEntry" Style="{StaticResource BaseEntry}"/>
+        </StackLayout>
+        <Label x:Name="typeLabel" Style="{StaticResource BaseText}"/>
+        <Button Text="OK" Clicked="Button_Clicked" />
+    </StackLayout>
+</xct:Popup>

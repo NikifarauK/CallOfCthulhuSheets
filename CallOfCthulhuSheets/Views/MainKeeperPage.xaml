@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallOfCthulhuSheets.Views.MainKeeperPage"
+             xmlns:models="clr-namespace:CallOfCthulhuSheets.Models"
+             xmlns:viewmodels="clr-namespace:CallOfCthulhuSheets.ViewModels"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Ваши кампании"
+             x:Name="TheMainKeeperPage"
+             BackgroundColor="{StaticResource PrimBackground}"
+             >
+    <ContentPage.BindingContext>
+        <viewmodels:MainKeeperViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Style="{StaticResource GrayFrame}">
+                <RefreshView Command="{Binding RefreshAsyncCommand}"
+                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                         >
+                    <StackLayout>
+
+                        <CollectionView 
+                         VerticalOptions="StartAndExpand"
+                         ItemsSource="{Binding Campaigns}"
+                         SelectionMode="Single"
+                         SelectedItem="{Binding SelectedCampaign}"
+                         SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                         SelectionChangedCommandParameter="{Binding SelectedCampaign}"
+                    >
+                            <CollectionView.EmptyView>
+                                <Frame Style="{StaticResource GrayFrame}" 
+                                   HeightRequest="20"
+                                   VerticalOptions="Start">
+                                    <Label Text="Здесь будут отображаться созданные вами компании" Style="{StaticResource BaseText}"
+                                           VerticalOptions="Center" HorizontalOptions="Center"/>
+                                </Frame>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate  x:DataType="models:Campaign">
+                                    <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItem BackgroundColor="Red"
+                                                   Command="{Binding BindingContext.DeleteCommand, Source={Reference TheMainKeeperPage}}"
+                                                   CommandParameter="{Binding .}"
+                                                   IsDestructive="True"
+                                                   Text="Delete" />
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+                                        <Frame Style="{StaticResource GrayFrame}" 
+                                       Padding="5"
+                                       Margin="5"
+                                       BackgroundColor="#22256323">
+                                            <Frame Style="{StaticResource GrayFrame}">
+                                                <StackLayout >
+                                                    <Label Text="{Binding Name}" />
+                                                    <Label Text="{Binding Description}"  />
+                                                    <Label Text="{Binding NPCs.Count, StringFormat='Количество NPC: {0}'}"/>
+                                                    <Label Text="{Binding Sessions.Count, StringFormat='Количество сессий: {0}'}"/>
+                                                </StackLayout>
+                                            </Frame>
+                                        </Frame>
+                                    </SwipeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Button Text="Создать новую кампанию" Command="{Binding NewCampaign}"/>
+                    </StackLayout>
+                </RefreshView>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
